@@ -1,0 +1,13 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+/.quarto/
+# the following files are too large for github
+/data/transcriptome_output/transcriptome_chunks/
+/data/organismal_level_output/RFF.csv
+/data/organismal_level_output/RFM.csv
+/data/organismal_level_output/RMF.csv
+/data/organismal_level_output/RMM.csv
+/data/huang_transcriptome/
+/fits/
