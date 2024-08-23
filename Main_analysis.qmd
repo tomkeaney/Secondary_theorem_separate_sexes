@@ -815,7 +815,7 @@ plot_e <-
 (Figure_3 <- plot_d/ plot_e + plot_annotation(tag_levels = "a"))
 ```
 
-**Figure 3**. Points show evidence ratios (ERs) for **a** $\Delta R$ (defined as $R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the organismal level phenotype dataset. Traits are loosely organised into guilds to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $\Delta R$ > 0 is equal to the probability that $\Delta R$ < 0, or that a trait is just as likely to have a sexually concordant response to selection (ER > 1) as a sexually antagonistic response (ER < 1). The upper dotted line on each plot indicates an evidence ratio of 39, while the lower dotted line indicates an evidence ratio of 1/39; these correspond strongly with the frequentist $p$ = 0.05. Traits with the most extreme evidence ratios are labelled.
+**Figure 3**. Points show evidence ratios (ERs) for **a** $\Delta R$ (defined as $R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the organismal level phenotype dataset. Traits are loosely organised into guilds to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $\Delta R$ > 0 is equal to the probability that $\Delta R$ < 0, or that a trait is just as likely to have a sexually concordant response to selection (ER > 1) as a sexually antagonistic response (ER < 1). The dotted lines indicate an evidence ratio of 39 or 1/39; these correspond strongly with the frequentist $p$ = 0.05.  Traits with ER > 39 or < 1/39 are labelled.
 
 ## Table S2/ Supplementary dataset 2
 
@@ -2666,7 +2666,7 @@ plot_transcriptome_e <-
 )
 ```
 
-**Figure 4**. Points show evidence ratios (ERs) for **a** positive $\Delta R$ ($R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the transcriptome dataset. The dashed lines indicate an evidence ratio of 1, where the probability that $\Delta R$ > 0 is equal to the probability that $\Delta R$ < 0, or that a trait is just as likely to have a sexually concordant response to selection (ER > 1) as a sexually antagonistic response (ER < 1). The upper dotted line on each plot indicates an evidence ratio of 39, while the lower dotted line indicates an evidence ratio of 1/39; these correspond strongly with the frequentist $p$ = 0.05. Traits with the most extreme evidence ratios are labelled.
+**Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ in females - $R$ in males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER > 1000 or < 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER > 39 or < 1/39 are labelled.
 
 ## Table S3/ Supplementary dataset 3
 
@@ -2917,7 +2917,7 @@ top / bottom &
   plot_annotation(tag_levels = "a") 
 ```
 
-**Figure 2**. **a** and **b** show mean $R_F$ and $R_M$ estimates for organismal and gene expression traits, respectively. Elipses show where 95% of traits fall in multivariate normal trait space. **c** shows the posterior distribution for |$\overline{R}$| across organismal level traits, the mean expected response to selection (absolute value) in females and males and split by the sex the trait was measured in. **d** shows |$\overline{R}$| across gene-expression traits. |$\overline{R}$| is expressed in trait standard deviations. **e** and **f** show the proportion of evolutionary change in response to selection predicted to occur through males, in the organismal and gene expression datasets, respectively. Points indicate the estimated mean with associated 66 and 95% credible intervals (where wide enough to be visible).
+**Figure 2**. **a** and **b** show mean $R_F$ and $R_M$ estimates for organismal and gene expression traits, respectively. Ellipses show where 95% of traits fall in multivariate normal trait space. **c** shows the posterior distribution for |$\overline{R_F}$| and |$\overline{R_M}$| across organismal-level traits, the mean expected response to selection (absolute value) in females and males and split by the sex the trait was measured in. **d** shows |$\overline{R_F}$| and |$\overline{R_M}$| across gene-expression traits. |$\overline{R}$| is expressed in trait standard deviations. **e** and **f** show the proportion of evolutionary change in response to selection predicted to occur through males, in the organismal and gene expression datasets, respectively. Points indicate the estimated mean with associated 66 and 95% credible intervals (where wide enough to be visible).
 
 **Calculating stats for the results section**
 
@@ -3240,7 +3240,7 @@ Bürkner, P.-C. 2017. brms: An R Package for Bayesian Multilevel Models Using St
 
 Everett, L. J., W. Huang, S. Zhou, M. A. Carbone, R. F. Lyman, G. H. Arya, M. S. Geisz, et al. 2020. Gene expression networks in the _Drosophila_ Genetic Reference Panel. _Genome research_ 30:485–496.
 
-Geeta, A. M., T. S. Chechi, S. D. Bhosle, Srishti, R. Meena, N. Ahlawat, K. Maggu, R. Kapila and N. G. Prasad. _In preparation_. Using sex and sex ratio specific Price-Robertson covariances to investigate within-sex and across-sex selective effects on reproduction related traits in _Drosophila melanogaster_.
+Geeta Arun, M., T. S. Chechi, S. D. Bhosle, Srishti, R. Meena, N. Ahlawat, K. Maggu, R. Kapila and N. G. Prasad. _In preparation_. Using sex and sex ratio specific Price-Robertson covariances to investigate within-sex and across-sex selective effects on reproduction related traits in _Drosophila melanogaster_.
 
 Huang, W., M. A. Carbone, M. M. Magwire, J. A. Peiffer, R. F. Lyman, E. A. Stone, R. R. H. Anholt, et al. 2015. Genetic basis of transcriptome diversity in _Drosophila melanogaster_. _Proceedings of the National Academy of Sciences_ 112:E6010–9.
 
