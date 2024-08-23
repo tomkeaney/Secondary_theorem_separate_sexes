@@ -1,0 +1,19 @@
+---
+title: "How to navigate this document"
+execute:
+  warning: false
+  message: false
+---
+
+This website presents an analysis of the predicted evolutionary response to selection in a population of _Drosophila melanogaster_. It accompanies the manuscript "The complication of sex: estimating adaptation when selection acts on females and males" in review at _Evolution_, and is designed so that our methods can be fully reproduced with relative ease. The data collation tab contains information on our dataset and documents how it was quality controlled. Our analysis relies on using the mean phenotypic values for near-isogenic lines of flies. Each line carries a single genotype so these phenotypic means can be used as estimates of breeding values. The 'Finding line means' tab documents the statistical modelling we used to find line means when only raw, individual level data was provided by the original study. The final tab documents our analysis. It includes the code to wrangle the data, run the models and build the figures. 
+
+We welcome any queries or comments concerning our analysis; please email `tkeaney@uni-mainz.de`
+
+### Analysis system environment:
+
+```{r, echo=FALSE}
+library(pander)
+library(dplyr)
+sessionInfo() %>% pander
+```
+

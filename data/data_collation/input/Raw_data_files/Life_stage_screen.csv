@@ -1,0 +1,75 @@
+﻿Trait,Life_stage
+alpha-amanitin.resistance.0.2,Juvenile
+alpha-amanitin.resistance.2,Juvenile
+alpha-amanitin.resistance.LC50,Juvenile
+anoxia.tolerance.larval,Juvenile
+azinphos.methyl.resistance.0.25,Juvenile
+azinphos.methyl.resistance.0.5,Juvenile
+azinphos.methyl.resistance.1,Juvenile
+azinphos.methyl.resistance.2,Juvenile
+azinphos.methyl.resistance.LD50,Juvenile
+chlorantraniliprole.resistance.0.5,Juvenile
+chlorantraniliprole.resistance.1,Juvenile
+chlorantraniliprole.resistance.2,Juvenile
+chlorantraniliprole.resistance.3,Juvenile
+chlorantraniliprole.resistance.4,Juvenile
+chlorantraniliprole.resistance.5,Juvenile
+cold.hardiness.18C.larvae,Juvenile
+cold.hardiness.25C.larvae,Juvenile
+duration.embryogenesis,Juvenile
+egg.adult.dev.time.20C.f,Juvenile
+egg.adult.dev.time.25C.f,Juvenile
+egg.adult.dev.time.30C.f,Juvenile
+egg.adult.development.time.2016.f,Juvenile
+egg.adult.development.time.2016.m,Juvenile
+egg.adult.development.time.2018,Juvenile
+egg.adult.development.time.EtOH.exposure,Juvenile
+egg.adult.viability.2014.25C,Juvenile
+egg.adult.viability.2016,Juvenile
+"egg.adult.viability.2016.25C	",Juvenile
+egg.adult.viability.2018,Juvenile
+egg.adult.viability.20C,Juvenile
+egg.adult.viability.28C,Juvenile
+egg.adult.viability.30C,Juvenile
+egg.adult.viability.ethanol.exposure,Juvenile
+egg.larva.viability,Juvenile
+egg.pupa.viability.20C,Juvenile
+egg.pupa.viability.25C,Juvenile
+"egg.pupa.viability.30C	",Juvenile
+ethanol.sensitivity.development.time,Juvenile
+ethanol.sensitivity.viability,Juvenile
+fipronil.resistance,Juvenile
+glucose.larvae.2018,Juvenile
+glycerol.larvae.2018,Juvenile
+glycogen.larvae.2018,Juvenile
+heat.hardiness.18C.larvae,Juvenile
+heat.hardiness.25C.larvae,Juvenile
+imidacloprid.resistance.100ppm,Juvenile
+imidacloprid.resistance.25ppm,Juvenile
+lactate.larvae.2018,Juvenile
+larvae.length.low.yeast.anexic,Juvenile
+larvae.length.low.yeast.L.plantarum,Juvenile
+lead.effect.development.time.f,Juvenile
+lead.effect.development.time.m,Juvenile
+lead.effect.viability,Juvenile
+lead.egg.adult.development.time.2016.f,Juvenile
+lead.egg.adult.development.time.2016.m,Juvenile
+lead.egg.adult.viability.2016,Juvenile
+MeHg.tolerance,Juvenile
+min.pupation.time.20C,Juvenile
+"min.pupation.time.25C	",Juvenile
+"min.pupation.time.30C	",Juvenile
+p-xylene.susceptibility,Juvenile
+protein.larvae.2018,Juvenile
+pupal.case.length,Juvenile
+pupal.mass.20C.f,Juvenile
+"pupal.mass.25C.f	",Juvenile
+pupal.mass.30C.f,Juvenile
+pupation.height,Juvenile
+pyriprole.resistance,Juvenile
+"starvation.resistance.larvae	",Juvenile
+triacylglycerol.larvae.2018,Juvenile
+wing.imaginal.disk.size.absolute.f,Juvenile
+"wing.imaginal.disk.size.absolute.m	",Juvenile
+"wing.imaginal.disk.size.relative.f	",Juvenile
+wing.imaginal.disk.size.relative.m,Juvenile

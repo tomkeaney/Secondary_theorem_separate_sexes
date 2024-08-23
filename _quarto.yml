@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "The sex-specific response to selection in _D. melanogaster_"
+  navbar:
+    left:
+      - href: About.qmd
+        text: About
+      - href: Data_collation.qmd
+        text: Data collation
+      - href: Get_line_means_from_raw_data.qmd
+        text: Find line means
+      - href: Main_analysis.qmd
+        text: Analysis
+
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/tomkeaney/Secondary_theorem_separate_sexes
+
+format:
+  html:
+      theme: Minty # browse these here: https://quarto.org/docs/output-formats/html-themes.html
+      page-layout: full
+      max-width: 1800px # adjust if your plots don't fit or you want more or less whitespace
+      toc: true # do you want a table of contents, by default it floats as you scroll
+      toc-location: left # where should it be displayed
+      toc-title: "Sections"
+      code-fold: true # fold code up for neater display
+      code-tools: true # add a button at the top of doc to show all code
+      code-summary: "Show the code"
+      smooth-scroll: true
+      embed-resources: true # output doc contains all info needed to display html
+      fig-format: png
