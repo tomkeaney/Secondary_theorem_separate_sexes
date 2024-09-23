@@ -922,7 +922,8 @@ R_pA <-
   #               aes(x = R_F, y = R_M), colour = "white", alpha = 1, size = 1) +
   labs(x = "Reponse to selection on females",
        y = "Reponse to selection on males",
-       fill = "Sexual concordance (Log-odds)") +
+       fill = "Sexual concordance (Log-odds)",
+       title = "Organismal-level traits") +
   coord_fixed(xlim = c(-0.35, 0.35), ylim = c(-0.35, 0.35)) +
   scale_x_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
   scale_y_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
@@ -930,6 +931,7 @@ R_pA <-
   theme_bw() +
   theme(legend.position = "bottom",
         legend.title = element_markdown(),
+        plot.title = element_text(hjust = 0.5),
         text = element_text(size = 14))
 
 R_pA
@@ -1008,14 +1010,16 @@ R_pC <-
   stat_slab(.width = c(0.66, 0.95), alpha = 0.9,
                point_interval = "median_qi", point_fill = "white",
                shape = 21, point_size = 5, stroke = 1.5) + 
-  labs(x = expression("Mean |"* italic(R) * "| for organismal-level traits"),
+  labs(x = expression("Mean |"* italic(R) * "|"),
        y = "Phenotyped sex",
-       fill = "Sex under selection") +
+       fill = "Sex under selection",
+       title = "Organismal-level traits") +
   scale_fill_manual(values = c(carto_pal(7, "Purp")[5], carto_pal(7, "Peach")[5])) +
   coord_cartesian(xlim = c(0.05, 0.11)) +
   theme_minimal() + 
   theme(panel.background = element_rect(fill='transparent'),
         legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5),
         panel.grid.minor.y = element_blank(),
         plot.background = element_rect(fill='transparent', color=NA),
         text = element_text(size=13))
@@ -1030,11 +1034,12 @@ R_pE <-
                shape = 21, point_size = 3, stroke = 1) + 
   geom_vline(xintercept = 0, linetype = 2, linewidth = 1.2) +
   coord_cartesian(xlim = c(-10, 50)) +
-  xlab(expression("% sex difference in |"*italic(R)* "|")) +
-  ylab("Phenotyped sex") +
+  labs(x = expression("% sex difference in |"*italic(R)* "|"),
+       y = "Phenotyped sex",
+       title = "Organismal-level traits") +
   theme_minimal() + 
   theme(panel.background = element_rect(fill='transparent'),
-        #panel.grid.major.y = element_blank(),
+        plot.title = element_text(hjust = 0.5),
         panel.grid.minor.y = element_blank(),
         plot.background = element_rect(fill='transparent', color=NA),
         legend.position = "none",
@@ -2797,12 +2802,14 @@ R_pB <-
   guides(fill = guide_colourbar(barwidth = 8, barheight = 1)) +
   labs(x = "Reponse to selection on females",
        y = "Reponse to selection on males",
-       fill = "Sexual concordance (Log-odds)") +
+       fill = "Sexual concordance (Log-odds)",
+       title = "Gene expression traits") +
   coord_fixed(xlim = c(-0.35, 0.35), ylim = c(-0.35, 0.35)) +
   scale_x_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
   scale_y_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
   theme_bw() +
   theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5),
         strip.background = element_rect(fill = "aliceblue"),
         legend.title = element_markdown(),
         text = element_text(size = 14))
@@ -2877,9 +2884,10 @@ R_pD <-
   filter(!str_detect(Parameter, "percent")) %>% 
   ggplot(aes(x = R_mean, y = Trait_Sex, fill = Fitness_Sex)) + 
   stat_slab(alpha = 0.9, shape = 21) +
-  labs(x = expression("Mean |"* italic(R) * "| for gene expression traits"),
+  labs(x = expression("Mean |"* italic(R) * "|"),
        y = "Phenotyped sex",
-       fill = "Sex under selection") +
+       fill = "Sex under selection",
+       title = "Gene expression traits") +
   scale_fill_manual(values = c(carto_pal(7, "Purp")[5], carto_pal(7, "Peach")[5])) +
   coord_cartesian(xlim = c(0.05, 0.11)) +
   theme_minimal() + 
@@ -2887,6 +2895,7 @@ R_pD <-
         panel.grid.minor.y = element_blank(),
         plot.background = element_rect(fill='transparent', color=NA),
         legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5),
         text = element_text(size=13))
 
 R_pF <-
@@ -2898,13 +2907,15 @@ R_pF <-
                shape = 21, point_size = 3, stroke = 1) + # width indicates the uncertainty intervals: here we have 66% and 95% intervals + # width indicates the uncertainty intervals: here we have 66% and 95% intervals+
   geom_vline(xintercept = 0, linetype = 2, linewidth = 1.2) +
   coord_cartesian(xlim = c(-10, 50)) +
-  xlab(expression("% sex difference in |"*italic(R)* "|")) +
-  ylab("Phenotyped sex") +
+  labs(x = expression("% sex difference in |"*italic(R)* "|"),
+       y = "Phenotyped sex",
+       title = "Gene expression traits") +
   theme_minimal() + 
   theme(panel.background = element_rect(fill='transparent'),
         panel.grid.minor.y = element_blank(),
         plot.background = element_rect(fill='transparent', color=NA),
         legend.position = "none",
+        plot.title = element_text(hjust = 0.5),
         text = element_text(size=13))
 
 ```
