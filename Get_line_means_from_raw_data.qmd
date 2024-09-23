@@ -3,6 +3,8 @@ title: "Estimating line means from raw data"
 execute:
   warning: false
   message: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Load in necessary packages
@@ -14,7 +16,10 @@ library(brms) # for bayesian models
 library(tidybayes) # for more bayesian things
 library(broom) # convert results of functions into tables
 
-if(!dir.exists("fits/raw_data_fits")) dir.create("fits/raw_data_fits")
+if(!dir.exists("fits")) {
+  dir.create("fits")
+  if(!dir.exists("fits/'raw_data_fits")) dir.create("fits/raw_data_fits")
+}
 my_scale <- function(x) as.numeric(scale(x))
 ```
 

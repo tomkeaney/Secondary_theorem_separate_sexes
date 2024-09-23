@@ -4,6 +4,8 @@ format: html
 execute:
   warning: false
   message: false
+editor_options: 
+  chunk_output_type: console
 ---
 
 # Load packages and the data
@@ -25,7 +27,6 @@ library(ggtext) # for markdown features in ggplot
 library(ggrepel) # for plot labels in ggplot
 library(ggnewscale) # to reset scales in ggplot 
 library(pander) # nice tables
-#library(bigsnpr) 
 
 # Create a function to build HTML searchable tables
 
@@ -103,14 +104,14 @@ clean_meta_data <-
 
 ```
 
-**Table S1**. Traits included for organismal-level analysis.
+**Supplementary dataset 1**. Traits included for organismal-level analysis.
 
 ```{r}
 table_data <- 
   trait_data %>% 
   distinct(Trait, .keep_all = T) %>% 
   rename(Phenotyped_sex = Sex) %>% 
-  select(Trait_nice, `Trait description`, `# lines measured`, Phenotyped_sex, Reference)
+  select(Trait = Trait_nice, `Trait description`, `# lines measured`, Phenotyped_sex, Reference)
 
 my_data_table(table_data)
 ```
@@ -118,7 +119,6 @@ my_data_table(table_data)
 Find the number of traits and studies included in our analysis.
 
 ```{r}
-
 # how many studies and traits do we have after filtering:
 num_unique_traits <- table_data %>% nrow()
 # in females
@@ -131,21 +131,20 @@ num_unique_studies <- table_data %>%  distinct(Reference) %>% nrow()
 num_unique_studies_f <- table_data %>% filter(Phenotyped_sex == "Female") %>% distinct(Reference) %>% nrow()
 # in males
 num_unique_studies_m <- table_data %>% filter(Phenotyped_sex == "Male") %>% distinct(Reference) %>% nrow()
-
 ```
 
 After this selection process, `r num_unique_traits` remain, that were measured across `r num_unique_studies` studies. There are `r num_unique_traits_f` measured in females and `r num_unique_traits_m` in males across `r num_unique_studies_f` and `r num_unique_studies_m` respectively.  
 
 ## Estimating $R$: the response to selection
 
-The response to selection can be predicted via the Robertson covariance (Robertson, 1968), $\Delta z = \sigma(A_w, A_z)$, where $\Delta z$ is the between generational change in the mean of a trait and $A_w$ and $A_z$ are breeding values for fitness and the trait in the current generation. It is also possible to write a sex-partitioned version of the Robertson covariance (Geeta Arun et al., _In preparation_) which similarly illustrates that $\Delta z$ is the average of the evolutionary change that occurs following selection on males and females. The partial evolutionary change for the i^th^ female or male trait is
+The response to selection can be predicted via the Robertson covariance (Robertson, 1968), $\Delta \bar{z} = \sigma(A_w, A_z)$, where $\Delta \bar{z}$ is the between-generational change in the mean of a trait and $A_w$ and $A_z$ are breeding values for fitness and the trait in the current generation. It is also possible to write a sex-partitioned version of the Robertson covariance (Geeta Arun et al., _In preparation_) which similarly illustrates that $\Delta \bar{z}$ is the average of the evolutionary change that occurs following selection on males and females. The partial evolutionary change for the i^th^ female or male trait is
 
 $$
-\Delta \overline{z_{Fi}} = \frac{1}{2}(\sigma(A_{wF, A_{zFi}}) + (\sigma(A_{wM}, A_{zFi})))
+\Delta \overline{z_{Fi}} = \frac{1}{2}(\sigma(A_{wF}, A_{zFi}) + (\sigma(A_{wM}, A_{zFi})))
 $${#eq-Female-evo}
 
 $$
-\Delta \overline{z_{Mi}} = \frac{1}{2}(\sigma(A_{wM, A_{zMi}}) + (\sigma(A_{wF}, A_{zMi})))
+\Delta \overline{z_{Mi}} = \frac{1}{2}(\sigma(A_{wM}, A_{zMi}) + (\sigma(A_{wF}, A_{zMi})))
 $${#eq-Male-evo}
 
 Here, we empirically estimate the genetic covariance terms in Equations 1 and 2 for many traits, which convey the female and male components of the overall evolutionary change in each male or female trait. Combining Equations 2 and 3 and writing $R_{FF}$ for the evolutionary response of a female trait due to selection on females, we find 
@@ -179,7 +178,6 @@ To estimate the covariance between $A_w$ and $A_z$, we fitted bivariate Bayesian
 Build functions to run the models
 
 ```{r}
-
 # RFF estimates
 
 female_traits <- trait_data %>% filter(Sex == "Female")
@@ -255,13 +253,11 @@ RMF_calculator <- function(selected_trait){
   
   posterior
 }
-
 ```
 
 ### Build models to calculate $R_{FM}$ & $R_{MF}$
 
 ```{r}
-
 # RMM estimates
 
 male_traits <- trait_data %>% filter(Sex == "Male")
@@ -388,13 +384,16 @@ R_male_traits <-
 
 ### Plot the sex-specific responses to selection
 
-```{r, fig.height=70, fig.width=12}
+```{r, fig.height=60, fig.width=12}
 
 p1 <-
   R_female_traits %>% 
-  bind_rows(R_male_traits) %>% 
+  bind_rows(R_male_traits %>% filter(Trait != "dopamine.response.to.paraquat.2021.m")) %>% 
   group_by(Trait) %>% 
   mutate(avg_R = median(Response_to_selection_female)) %>%
+  ungroup() %>% 
+  left_join(clean_meta_data %>% select(Trait, Trait_nice)) %>% 
+  select(-Trait) %>% rename(Trait = Trait_nice) %>%  
   ggplot(aes(Response_to_selection_female, fct_reorder(Trait, avg_R))) +
   stat_interval(.width = c(0.05, 0.66, 0.95), 
                 height = 1, show.legend = F) +
@@ -412,9 +411,12 @@ p1 <-
 
 p2 <-
   R_female_traits %>% 
-  bind_rows(R_male_traits) %>%
+  bind_rows(R_male_traits %>% filter(Trait != "dopamine.response.to.paraquat.2021.m")) %>% 
   group_by(Trait) %>% 
   mutate(avg_R = median(Response_to_selection_male)) %>%
+  ungroup() %>% 
+  left_join(clean_meta_data %>% select(Trait, Trait_nice)) %>% 
+  select(-Trait) %>% rename(Trait = Trait_nice) %>%  
   ggplot(aes(Response_to_selection_male, fct_reorder(Trait, avg_R))) +
   stat_interval(.width = c(0.05, 0.66, 0.95), 
                 height = 1, show.legend = F) +
@@ -435,7 +437,7 @@ p1 + p2 +
 
 ```
 
-**Figure S1**. The estimated response to selection on **a** females and **b** males for all traits in our dataset. Innermost bands approximate the median, while outer bands show the 66 and 95% credible intervals. Traits measured in females have a .f suffix while those measured in males are denoted with a .m suffix.
+**Figure S1**. The estimated response to selection on **a** females and **b** males for all traits in our dataset. Innermost bands approximate the median, while outer bands show the 66 and 95% credible intervals. Traits measured in females or males are denoted with an F or M respectively.
 
 ## Calculate various metrics
 
@@ -466,7 +468,6 @@ R_long_form <-
     pivot_longer(cols = 3:4, names_to = "Fitness_Sex", values_to = "R_metric") %>% 
     mutate(Fitness_Sex = case_when(Fitness_Sex == "Response_to_selection_female" ~ "Female",
                                    Fitness_Sex == "Response_to_selection_male" ~ "Male"))
-
 ```
 
 ## Calculating evidence ratios
@@ -817,9 +818,9 @@ plot_e <-
 
 **Figure 3**. Points show evidence ratios (ERs) for **a** $\Delta R$ (defined as $R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the organismal level phenotype dataset. Traits are loosely organised into guilds to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $\Delta R$ > 0 is equal to the probability that $\Delta R$ < 0, or that a trait is just as likely to have a sexually concordant response to selection (ER > 1) as a sexually antagonistic response (ER < 1). The dotted lines indicate an evidence ratio of 39 or 1/39; these correspond strongly with the frequentist $p$ = 0.05.  Traits with ER > 39 or < 1/39 are labelled.
 
-## Table S2/ Supplementary dataset 2
+## Supplementary dataset 2
 
-**Table S2** / **Supplementary dataset 2**: $R$ partitions and associated evidence ratios for the organismal level trait dataset. Trait descriptions are provided in Table S1. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
+**Supplementary dataset 2**: $R$ partitions and associated evidence ratios for the organismal level trait dataset. Trait descriptions are provided in Supplementary dataset 1. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
 ```{r}
 all_ol_traits_summary <-
   R_all_traits %>% 
@@ -861,9 +862,10 @@ my_data_table(all_ol_traits_summary)
 
 ## Estimate the correlation between $R_F$ and $R_M$
 
-To estimate the correlation between the evolutionary response to selection on females and males, while accounting for measurement error in selection response estimates, we use a bootstrapping approach. For each trait, we generate an $R_F$ and $R_M$ estimate, drawn from a normal distribution, parameterised with the mean and standard error we have empirically estimated. We then calculate the correlation for this particular draw of trait values. We repeat this process 10,000 times, and find the median correlation with associated 2.5% and 97.5% uncertainty intervals.
+To estimate the correlation between the evolutionary response to selection on females ($R_F$) and males ($R_M$), while accounting for measurement error in these parameters, we employed a bootstrapping approach. For each trait in the dataset, we generated an $R_F$ and $R_M$ estimate, each drawn from a normal distribution, parameterised with the $\mu$ and $\sigma$ values estimated by our bivariate Bayesian linear models. We then calculated the correlation across traits for that particular draw of $R_F$ and $R_M$ values. We repeated this process 10,000 times, and from the resulting distribution found the median correlation with associated 2.5% and 97.5% confidence intervals.
 
 ```{r}
+
 R_medians <-
   R_long_form %>%
   group_by(Trait, Fitness_Sex, Trait_Sex) %>% 
@@ -909,7 +911,7 @@ R_pA <-
               select(Trait, Concord_Evid_Ratio) %>%
               mutate(ER_log = log(Concord_Evid_Ratio))) %>% # log of the evidence ratio is log-odds
   ggplot(aes(x = median_Female, y = median_Male, fill = ER_log)) +
-  stat_ellipse(alpha = 0.8, type = "norm", linetype = 1, linewidth = 1) +
+  stat_ellipse(alpha = 0.8, type = "norm", linetype = 1, linewidth = 1, level = 0.95) +
   geom_point(shape = 21, size = 5, alpha = 0.85) +
   geom_hline(yintercept = 0, linetype = 2) +
   geom_vline(xintercept = 0, linetype = 2) +
@@ -920,7 +922,7 @@ R_pA <-
   #               aes(x = R_F, y = R_M), colour = "white", alpha = 1, size = 1) +
   labs(x = "Reponse to selection on females",
        y = "Reponse to selection on males",
-       fill = "Sexual concordance (log odds)") +
+       fill = "Sexual concordance (Log-odds)") +
   coord_fixed(xlim = c(-0.35, 0.35), ylim = c(-0.35, 0.35)) +
   scale_x_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
   scale_y_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
@@ -989,9 +991,7 @@ R_fitted <-
          Male_response_Female_trait = V3,
          Male_response_Male_trait = V4) %>% 
   as_tibble() %>% 
-  mutate(prop_response_male_ftrait = Male_response_Female_trait / (Male_response_Female_trait + Female_response_Female_trait),
-         prop_response_male_mtrait = Male_response_Male_trait / (Male_response_Male_trait + Female_response_Male_trait),
-         percent_diff_f_trait = ((Male_response_Female_trait - Female_response_Female_trait) / Female_response_Female_trait)*100,
+  mutate(percent_diff_f_trait = ((Male_response_Female_trait - Female_response_Female_trait) / Female_response_Female_trait)*100,
          percent_diff_m_trait = ((Male_response_Male_trait - Female_response_Male_trait ) / Female_response_Male_trait)*100) %>% 
   pivot_longer(cols = everything(), names_to = "Parameter", values_to = "R_mean") %>% 
   mutate(Fitness_Sex = case_when(str_detect(Parameter, "Female_response") ~ "Female",
@@ -1003,7 +1003,7 @@ R_fitted <-
 
 R_pC <-
   R_fitted %>% 
-  filter(!str_detect(Parameter, "percent") & !str_detect(Parameter, "prop")) %>%  
+  filter(!str_detect(Parameter, "percent")) %>%  
   ggplot(aes(x = R_mean, y = Trait_Sex, fill = Fitness_Sex)) +
   stat_slab(.width = c(0.66, 0.95), alpha = 0.9,
                point_interval = "median_qi", point_fill = "white",
@@ -1020,17 +1020,17 @@ R_pC <-
         plot.background = element_rect(fill='transparent', color=NA),
         text = element_text(size=13))
   
-R_pD <-
+R_pE <-
   R_fitted %>% 
-  filter(str_detect(Parameter, "prop")) %>%
-  mutate(Parameter = if_else(str_detect(Parameter, "mtrait"), "Male", "Female")) %>% 
+  filter(str_detect(Parameter, "percent")) %>%
+  mutate(Parameter = if_else(str_detect(Parameter, "m_trait"), "Male", "Female")) %>% 
   ggplot(aes(x = R_mean, y = Parameter, fill = after_stat(x > 0))) +
   stat_halfeye(.width = c(0.66, 0.95), alpha = 0.9, fill = carto_pal(7, "Emrld")[2],
                point_interval = "median_qi", point_fill = "white", scale = 0.5,
-               shape = 21, point_size = 5, stroke = 1.5) + 
-  geom_vline(xintercept = 0.5, linetype = 2, linewidth = 1.2) +
-  coord_cartesian(xlim = c(0.45, 0.6)) +
-  xlab(expression("prop. "*italic(R)* " that occurs through males")) +
+               shape = 21, point_size = 3, stroke = 1) + 
+  geom_vline(xintercept = 0, linetype = 2, linewidth = 1.2) +
+  coord_cartesian(xlim = c(-10, 50)) +
+  xlab(expression("% sex difference in |"*italic(R)* "|")) +
   ylab("Phenotyped sex") +
   theme_minimal() + 
   theme(panel.background = element_rect(fill='transparent'),
@@ -1040,7 +1040,7 @@ R_pD <-
         legend.position = "none",
         text = element_text(size=13))
 
-(R_pC + R_pD) +
+(R_pC + R_pE) +
   plot_annotation(tag_levels = 'a')
 
 ```
@@ -1057,10 +1057,22 @@ R_fitted %>%
 Get the total mean response of the organismal phenome
 
 ```{r}
+
+total_R_summary <-
+  R_all_traits %>% 
+  select(Trait, Trait_Sex, R_overall) %>% 
+  group_by(Trait, Trait_Sex) %>% 
+  summarise_draws("median", "sd", ~quantile(.x, probs = c(0.025, 0.975), na.rm = TRUE)) %>% 
+  ungroup() %>% 
+  select(-c(variable)) %>% 
+  mutate(absolute_R = abs(median)) %>% 
+  left_join(clean_meta_data %>% select(Trait, study_ID))
+
+
 median_R_total_model <- 
   brm(absolute_R | weights(1/sd) ~ 1 + (1|study_ID),
       family = brmsfamily(family = "Gamma"), # gamma is appropriate for the half-normal distribution created by taking the absolute
-      data = R_medians,
+      data = total_R_summary,
       prior = c(prior(normal(-2.2, 1), class = Intercept),
                 prior(exponential(1), class = sd),
                 prior(exponential(1), class = shape)),
@@ -2668,9 +2680,9 @@ plot_transcriptome_e <-
 
 **Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ in females - $R$ in males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER > 1000 or < 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER > 39 or < 1/39 are labelled.
 
-## Table S3/ Supplementary dataset 3
+## Supplementary dataset 3
 
-**Table S3** / **Supplementary dataset 3**: $R$ partitions and associated evidence ratios for the gene expression trait dataset. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
+**Supplementary dataset 3**: $R$ partitions and associated evidence ratios for the gene expression trait dataset. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
 ```{r}
 
 all_transcriptome_summary <-
@@ -2785,7 +2797,7 @@ R_pB <-
   guides(fill = guide_colourbar(barwidth = 8, barheight = 1)) +
   labs(x = "Reponse to selection on females",
        y = "Reponse to selection on males",
-       fill = "Sexual concordance (log odds)") +
+       fill = "Sexual concordance (Log-odds)") +
   coord_fixed(xlim = c(-0.35, 0.35), ylim = c(-0.35, 0.35)) +
   scale_x_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
   scale_y_continuous(breaks = c(-0.3, -0.2,-0.1, 0, 0.1 ,0.2,0.3)) +
@@ -2843,9 +2855,7 @@ R_transcriptome_fitted <-
   rename(FemaleFitness_FemaleTrait = V1, FemaleFitness_MaleTrait = V2, 
          MaleFitness_FemaleTrait = V3, MaleFitness_MaleTrait = V4) %>% 
   as_tibble() %>% 
-  mutate(prop_response_male_ftrait = MaleFitness_FemaleTrait / (MaleFitness_FemaleTrait + FemaleFitness_FemaleTrait),
-         prop_response_male_mtrait = MaleFitness_MaleTrait / (MaleFitness_MaleTrait + FemaleFitness_MaleTrait),
-         percent_diff_female = ((MaleFitness_FemaleTrait - FemaleFitness_FemaleTrait) / FemaleFitness_FemaleTrait)*100,
+  mutate(percent_diff_female = ((MaleFitness_FemaleTrait - FemaleFitness_FemaleTrait) / FemaleFitness_FemaleTrait)*100,
          percent_diff_male = ((MaleFitness_MaleTrait - FemaleFitness_MaleTrait)/ FemaleFitness_MaleTrait)*100) %>% 
   pivot_longer(cols = everything(), names_to = "Parameter", values_to = "R_mean") %>% 
   mutate(Fitness_Sex = case_when(str_detect(Parameter, "FemaleFitness") ~ "Female",
@@ -2853,9 +2863,7 @@ R_transcriptome_fitted <-
          Trait_Sex = case_when(str_detect(Parameter, "FemaleTrait") ~ "Female",
                                str_detect(Parameter, "MaleTrait") ~ "Male",
                                str_detect(Parameter, "percent_diff_female") ~ "Female",
-                               str_detect(Parameter, "percent_diff_male") ~ "Male",
-                               str_detect(Parameter, "ftrait") ~ "Female",
-                               str_detect(Parameter, "mtrait") ~ "Male"))
+                               str_detect(Parameter, "percent_diff_male") ~ "Male"))
 
 ```
 
@@ -2864,9 +2872,9 @@ R_transcriptome_fitted <-
 Create panels D and F
 
 ```{r}
-R_pE <-
+R_pD <-
   R_transcriptome_fitted %>% 
-  filter(!str_detect(Parameter, "percent") & !str_detect(Parameter, "prop")) %>% 
+  filter(!str_detect(Parameter, "percent")) %>% 
   ggplot(aes(x = R_mean, y = Trait_Sex, fill = Fitness_Sex)) + 
   stat_slab(alpha = 0.9, shape = 21) +
   labs(x = expression("Mean |"* italic(R) * "| for gene expression traits"),
@@ -2883,14 +2891,14 @@ R_pE <-
 
 R_pF <-
   R_transcriptome_fitted %>% 
-  filter(str_detect(Parameter, "prop")) %>%
+  filter(str_detect(Parameter, "percent")) %>%
   ggplot(aes(x = R_mean, y = Trait_Sex)) +
   stat_halfeye(.width = c(0.66, 0.95), alpha = 0.9, fill = carto_pal(7, "Emrld")[2],
                point_interval = "median_qi", point_fill = "white",
-               shape = 21, point_size = 4, stroke = 1.2) + # width indicates the uncertainty intervals: here we have 66% and 95% intervals + # width indicates the uncertainty intervals: here we have 66% and 95% intervals+
-  geom_vline(xintercept = 0.5, linetype = 2, linewidth = 1.2) +
-  coord_cartesian(xlim = c(0.45, 0.6)) +
-  xlab(expression("prop. "*italic(R)* " that occurs through males")) +
+               shape = 21, point_size = 3, stroke = 1) + # width indicates the uncertainty intervals: here we have 66% and 95% intervals + # width indicates the uncertainty intervals: here we have 66% and 95% intervals+
+  geom_vline(xintercept = 0, linetype = 2, linewidth = 1.2) +
+  coord_cartesian(xlim = c(-10, 50)) +
+  xlab(expression("% sex difference in |"*italic(R)* "|")) +
   ylab("Phenotyped sex") +
   theme_minimal() + 
   theme(panel.background = element_rect(fill='transparent'),
@@ -2910,8 +2918,8 @@ top <-
   plot_layout(guides = "collect", axis_titles = "collect") & 
   theme(legend.position = "bottom")
 
-bottom <- (R_pC + R_pE + plot_layout(guides = "collect") &
-             theme(legend.position = "bottom")) / (R_pD + R_pF)
+bottom <- (R_pC + R_pD + plot_layout(guides = "collect") &
+             theme(legend.position = "bottom")) / (R_pE + R_pF)
 
 top / bottom & 
   plot_annotation(tag_levels = "a") 
@@ -2954,7 +2962,11 @@ median_R_total_model_transcriptome %>%
 
 The aim of this analysis is to test whether genetic covariances tend to be of similar magnitude between pairs of females traits, pairs of male traits, or pairs comprising one female trait and one male trait. 
 
-More specifically, using the terminology of the sex-specific multivariate breeder's equation (Lande 1980; explained in Appendix 1): $\begin{bmatrix} \Delta\bar{z_f} \\ \Delta\bar{z_m} \end{bmatrix} = \frac{1}{2} \begin{bmatrix} G_f & B \\ B & G_m \end{bmatrix} \begin{bmatrix} \beta_f \\ \beta_m \end{bmatrix}$, this analysis tests whether the mean of the off-diagonal terms in $G_f$, $G_m$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another. 
+More specifically, using the terminology of the sex-specific multivariate breeder's equation (Lande 1980; explained in Appendix 1): 
+
+$$\begin{bmatrix} \Delta\bar{z_f} \\ \Delta\bar{z_m} \end{bmatrix} = \frac{1}{2} \begin{bmatrix} G_f & B \\ B & G_m \end{bmatrix} \begin{bmatrix} \beta_f \\ \beta_m \end{bmatrix}$$
+
+this analysis tests whether the mean of the off-diagonal terms in $G_f$, $G_m$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another. 
 
 We use the organismal trait dataset as this is where we find large differences in the predicted response to selection on females and males.
 
@@ -3255,3 +3267,11 @@ Robertson, A. 1968. The spectrum of genetic variation. _Population biology and e
 Schmidt, J. M., P. Battlay, R. S. Gledhill-Smith, R. T. Good, C. Lumb, A. Fournier-Level, and C. Robin. 2017. Insights into DDT Resistance from the _Drosophila melanogaster_ Genetic Reference Panel. _Genetics_ 207:1181–1193.
 
 Wong, H. W. S., and L. Holman. 2023. Pleiotropic fitness effects across sexes and ages in the _Drosophila_ genome and transcriptome. _Evolution_.
+
+
+### Analysis system environment:
+
+```{r, echo=FALSE}
+library(pander)
+pander(sessionInfo())
+```

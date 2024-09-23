@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "The sex-specific response to selection in _D. melanogaster_"
+  title: "Phenome-wide response to sex-specific selection in in _D. melanogaster_"
   navbar:
     left:
       - href: About.qmd

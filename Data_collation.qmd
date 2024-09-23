@@ -5,14 +5,14 @@ execute:
   message: false
 ---
 
-# Load in necessary packages
+# Load necessary packages
 
 ```{r load packages}
 library(tidyverse)
 library(DT) # for interactive tables
 ```
 
-## Loading and combining the data from various sources 
+## Loading and combining the DGRP phenotype data 
 
 ### Line mean phenotype data provided by original authors
 
@@ -25,7 +25,7 @@ all.line.mean.phenos <- read_csv("data/data_collation/input/all.line.mean.phenos
 
 ### Loading the line mean data calculated by us from the raw data
 
-Some studies only provide the raw data they collected when measuring DGRP phenotypes (e.g. measurements of individual flies, with replicates within each DGRP line). We need line mean data to calculate genetic correlations between traits and run typical GWA analyses. To get line means, we estimated them from the raw data as described in the script `analysis/get_line_means_from_raw_data.Rmd`, which can be viewed [here](get_line_means_from_raw_data.html).
+Some studies provide the raw data they collected when measuring DGRP phenotypes (e.g. measurements of individual flies, with replicates within each DGRP line), instead of line means. To calculate line means, we estimated them from the raw data as described in the script `analysis/get_line_means_from_raw_data.Rmd`, which can be viewed [here](get_line_means_from_raw_data.html).
 
 ```{r}
 line.mean.phenos.from.raw.data <- read_csv("data/data_collation/output/dgrp_phenos_calculated_from_raw_data.csv") %>% 
@@ -48,11 +48,11 @@ num_unique_lines <- length(unique(all.dgrp.phenos_combined$line))
 
 ### Removing unusual lines
 
-We have phenotype line means for {r num_unique_lines} lines, which is more than we expected. There appear to be some lines that have been used in very few studies, suggesting some of these lines reflect labelling errors.
+We have phenotype line means for `r num_unique_lines` DGRP lines, which is more than the 'standard' set of 205 DGRP lines. There are some lines that have been used in very few studies, which possibly reflect typos and labelling errors.
 
 After checking the [Bloomington Drosophila Stock Centre](https://bdsc.indiana.edu/Home/Search) and [Flybase](http://flybase.org/reports/FBlc0000504.html) we found the following anomalies:
 
--   Chapman et al (2020): lines 273, 331, 501, 568, 709, 831, 846 - these lines are not phenotyped in any other study and are not documented on flybase.
+-   Chapman et al (2020): lines 273, 331, 501, 568, 709, 831, 846 - these lines are not phenotyped in any other study and are not documented on Flybase.
 
 -   Palmer et al (2018): line 575 - not on Flybase
 
@@ -62,30 +62,25 @@ After checking the [Bloomington Drosophila Stock Centre](https://bdsc.indiana.ed
 
 -   Watanabe and Riddle (2021): line 854 - not on Flybase
 
--   Battlay et al (2016): lines 226, 847 and 917 - there is no obvious reason for these mysterious lines. There are no obvious typos and the paper states they conduct GWA with 178 lines, which matches the number reported in File S2, which is where we sourced the data.
+-   Battlay et al (2016): lines 226, 847 and 917 - not on Flybase.
 
 -   Katzenberger et al (2015): line 521 - no obvious typo (data is ordered by increasing trait value). One-off issue. Not on Flybase.
 
--   Turner, Miller and Cochrane (2013): line 760 - no obvious typo. One off. Not on Flybase.
+-   Turner, Miller and Cochrane (2013): line 760 - Not on Flybase.
 
--   Montgomery et al (2014): lines 424 and 766 - Errors appear to be mislabelled lines. Table S3 includes RAL lines 424 and 766. Line 766 is out of numeric order in the Table. Most likely to actually be line 776 or 786, but we cannot be sure.
+-   Montgomery et al (2014): lines 424 and 766 - Errors appear to be mislabelled lines. Table S3 includes RAL lines 424 and 766. Line 766 is out of numeric order in the Table.
 
--   He et al (2014): Bloomington stock number 28120 - Error appears to be a typo. Line 28120 is included in the raw data, but isn't listed in Table S2 which shows the lines used in the study. One-off issue.
+-   He et al (2014): Bloomington stock number 28120 - Error appears to be a typo. Line 28120 is included in the raw data, but isn't listed in Table S2 which shows the lines used in the study. 
 
--   Lafluente, Duneau and Beldade (2018): line 809 - Likely to be a typo or a labelling error. One-off issue.
+-   Lafluente, Duneau and Beldade (2018): line 809 - Likely to be a typo or a labelling error. 
 
-The following code removes these putatively erroneous lines from the dataset:
+The following code removes these possibly erroneously-labelled lines (i.e. lines 226, 273, 285, 331, 424, 471, 501, 521, 568, 575, 709, 760, 766, 809, 831, 846, 847, 854, and 917) from the dataset:
 
 ```{r}
 # check how many traits each line has been phenotyped for
 line_test <- all.dgrp.phenos_combined %>% group_by(line) %>% 
   summarise(n_traits = length(Trait)) %>% 
   arrange(n_traits)
-
-# check specific lines
-
-#print(all.dgrp.phenos_combined %>% 
- # filter(line == "556"), n = 31)
 
 # remove the aberrant lines
 aberrant_lines <- c(226, 273, 285, 331, 424, 471, 501, 
@@ -99,11 +94,11 @@ all.dgrp.phenos_combined <-
 
 This still leaves 219 lines, which was unexpected because most studies state that the DGRP consists of 205 lines. However, the DGRP record on Flybase (<http://flybase.org/reports/FBlc0000504.html>) indicates that a total of 219 lines have been included in the DGRP at some point since its creation. We infer that some lines were withdrawn from the Bloomington stock centre, explaining their absence from most DGRP studies.
 
-The lines that have been withdrawn but are included in our dataset are: 80, 272, 343, 378, 387, 393, 398, 476, 514, 554, 556, 591, 750, 771. We chose **not to remove** these lines from our dataset, as many of the studies we include in our dataset make use of these lines.
+The lines that have been withdrawn from Bloomington but are included in our dataset are: 80, 272, 343, 378, 387, 393, 398, 476, 514, 554, 556, 591, 750, 771. We retained these lines from our dataset, since the lines appear in several of the studies included in our dataset.
 
 ### Removing data duplicates and incorrect entries
 
-Some studies report data that has been previously used (in a way that we missed in our initial data collection), leading to perfect or near perfect correlations between traits. We here remove one such duplicate trait. 
+Some studies report data that has been previously used (in a way that we missed in our initial data collection), leading to perfect or near-perfect correlations between traits. We here remove one such duplicate trait. 
 
 Another study includes data that we entered into the database incorrectly: one trait was measured in 10 lines (below our cutoff) but was entered for 99 lines. We remove this error from the dataset.
 
@@ -144,9 +139,9 @@ all.dgrp.phenos_combined_subset <- all.dgrp.phenos_combined_subset %>%
 
 For some traits, a small number of lines had >1 trait value. We fixed these datasets in the original spreadsheet before it entered R, but document our fixes here for transparency.
 
--   Unckless, Rottschaefer and Lazzaro (2015, _G3_) include line 287 twice in their provided data. The trait values were identical, so we simply removed the duplication. 
+-   Unckless, Rottschaefer and Lazzaro (2015, _G3_) include line 287 twice in their data. The trait values were identical, so we simply removed the duplication. 
 
--   Chow, Wolfner and Clark (2013, _PNAS_) include line 287 twice in their data (coincidence?). They measured two traits: a hazard ratio for tunicamycin-induced survival and an LT50 value. Line 287 has two different hazard ratios, but the same LT50 value. We therefore removed line 287 completely from the hazard ratio dataset, but only removed the duplicate in the LT50 dataset.
+-   Chow, Wolfner and Clark (2013, _PNAS_) include line 287 twice in their data (presumably a coincidence). They measured two traits: a hazard ratio for tunicamycin-induced survival and an LT50 value. Line 287 has two different hazard ratios, but the same LT50 value. We therefore removed line 287 completely from the hazard ratio dataset, but only removed the duplicate in the LT50 dataset.
 
 -   Hotson and Schneider (2015, _G3_) include line 712 twice in their provided data, for the trait `L.monocytogenes.load.m`. The duplicates provide different values. Due to this ambiguity, we removed line 712 from the dataset.
 
@@ -173,7 +168,7 @@ n_studies_after_cleaning <- all.dgrp.phenos_combined_subset %>%
   distinct(Reference) %>% nrow()
 ```
 
-Here, we save the {r n_traits_after_cleaning} traits as a .csv file called `data/derived/all.dgrp.phenos_unscaled.csv`, which you may wish to download and use in your research. The file contains 4 columns which give the name of the DGRP line (`line`), the name of the trait being measured (`Trait`), the reference (`Reference`), and the estimated mean value of the focal trait in the focal DGRP line (`trait_value`). 
+Here, we save the `r n_traits_after_cleaning` traits as a .csv file called `data/derived/all.dgrp.phenos_unscaled.csv`, which you may wish to download and use in your research. The file contains 4 columns which give the name of the DGRP line (`line`), the name of the trait being measured (`Trait`), the reference (`Reference`), and the estimated mean value of the focal trait in the focal DGRP line (`trait_value`). The trait values have not been scaled by us, though many of the traits were scaled in some way in the original studies. 
 
 To help interpret the contents of this file, we also save a metadata file called `data/derived/meta_data_for_all_traits.csv`, which gives information about each trait. This file is also shown in the HTML Table below. The columns are interpreted as follows:
 
@@ -243,7 +238,7 @@ my_data_table <- function(df){
   )
 }
 
-my_data_table(complete_metadata)
+my_data_table(complete_metadata %>% select(Trait, `Trait description`, everything()))
 ```
 
 ## Save the cleaned dataset, with traits measured in standard units
@@ -258,4 +253,11 @@ all.dgrp.phenos_scaled <- all.dgrp.phenos_combined_subset %>%
   mutate(trait_value = as.numeric(scale(trait_value)))
 
 write_csv(all.dgrp.phenos_scaled, file = "data/data_collation/output/all.dgrp.phenos_scaled.csv")
+```
+
+### Analysis system environment:
+
+```{r, echo=FALSE}
+library(pander)
+pander(sessionInfo())
 ```
