@@ -58,7 +58,7 @@ my_data_table <- function(df){
 
 ## Selecting data appropriate for analysis
 
-We conducted a near-exhaustive search of the literature until January 2022, to obtain line mean estimates and associated meta-data for quantitative traits that have been measured in the DGRP. We did not include data collected for traits that had been measured in heterozygous combinations of multiple DGRP lines. To ready the data for analysis, we grouped trait values by trait and sex and standardised the data to have mean = 0 and sd = 1. Sex-specific standardised line means for each trait were then joined with their standardised fitness estimates, obtained from [Wong and Holman (2023)](https://academic.oup.com/evolut/article/77/12/2642/7279223). We also include some helpful metadata for downstream analysis. We then pruned the dataset to only include traits that have been measured in single-sex cohorts, in 80 or more lines. We also removed traits included in two large datasets on the microbiome and metabolome ([Everett _et al_. 2020](https://genome.cshlp.org/content/30/3/485.short) and [Jin _et al_. 2020](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008835)).
+We conducted a near-exhaustive search of the literature until January 2022, to obtain line mean estimates and associated meta-data for quantitative traits that have been measured in the DGRP. We did not include data collected for traits that had been measured in heterozygous combinations of multiple DGRP lines. To ready the data for analysis, we grouped trait values by trait and sex and standardised the data to have mean = 0 and sd = 1. Sex-specific standardised line means for each trait were then joined with their standardised fitness estimates, obtained from [Wong and Holman (2023)](https://academic.oup.com/evolut/article/77/12/2642/7279223). We also include some helpful metadata for downstream analysis. We then pruned the dataset to only include traits that have been measured in single-sex cohorts, in 80 or more lines. We also removed traits included in two large datasets on the microbiome and metabolome ([Everett *et al*. 2020](https://genome.cshlp.org/content/30/3/485.short) and [Jin *et al*. 2020](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008835)).
 
 ```{r}
 
@@ -133,43 +133,43 @@ num_unique_studies_f <- table_data %>% filter(Phenotyped_sex == "Female") %>% di
 num_unique_studies_m <- table_data %>% filter(Phenotyped_sex == "Male") %>% distinct(Reference) %>% nrow()
 ```
 
-After this selection process, `r num_unique_traits` remain, that were measured across `r num_unique_studies` studies. There are `r num_unique_traits_f` measured in females and `r num_unique_traits_m` in males across `r num_unique_studies_f` and `r num_unique_studies_m` respectively.  
+After this selection process, `r num_unique_traits` remain, that were measured across `r num_unique_studies` studies. There are `r num_unique_traits_f` measured in females and `r num_unique_traits_m` in males across `r num_unique_studies_f` and `r num_unique_studies_m` respectively.
 
 ## Estimating $R$: the response to selection
 
-The response to selection can be predicted via the Robertson covariance (Robertson, 1968), $\Delta \bar{z} = \sigma(A_w, A_z)$, where $\Delta \bar{z}$ is the between-generational change in the mean of a trait and $A_w$ and $A_z$ are breeding values for fitness and the trait in the current generation. It is also possible to write a sex-partitioned version of the Robertson covariance (Geeta Arun et al., _In preparation_) which similarly illustrates that $\Delta \bar{z}$ is the average of the evolutionary change that occurs following selection on males and females. The partial evolutionary change for the i^th^ female or male trait is
+The response to selection can be predicted via the Robertson covariance (Robertson, 1968), $\Delta \bar{z} = \sigma(A_w, A_z)$, where $\Delta \bar{z}$ is the between-generational change in the mean of a trait and $A_w$ and $A_z$ are breeding values for fitness and the trait in the current generation. It is also possible to write a sex-partitioned version of the Robertson covariance (Geeta Arun et al., *In preparation*) which similarly illustrates that $\Delta \bar{z}$ is the average of the evolutionary change that occurs following selection on males and females. The partial evolutionary change for the i^th^ female or male trait is
 
 $$
 \Delta \overline{z_{Fi}} = \frac{1}{2}(\sigma(A_{wF}, A_{zFi}) + (\sigma(A_{wM}, A_{zFi})))
-$${#eq-Female-evo}
+$$ {#eq-Female-evo}
 
 $$
 \Delta \overline{z_{Mi}} = \frac{1}{2}(\sigma(A_{wM}, A_{zMi}) + (\sigma(A_{wF}, A_{zMi})))
-$${#eq-Male-evo}
+$$ {#eq-Male-evo}
 
-Here, we empirically estimate the genetic covariance terms in Equations 1 and 2 for many traits, which convey the female and male components of the overall evolutionary change in each male or female trait. Combining Equations 2 and 3 and writing $R_{FF}$ for the evolutionary response of a female trait due to selection on females, we find 
+Here, we empirically estimate the genetic covariance terms in Equations 1 and 2 for many traits, which convey the female and male components of the overall evolutionary change in each male or female trait. Combining Equations 2 and 3 and writing $R_{FF}$ for the evolutionary response of a female trait due to selection on females, we find
 
 $$
 R_{FF} = \sigma(A_{wF}, A_{zFi})
-$${#eq-Ff-Fz}
+$$ {#eq-Ff-Fz}
 
 Similarly, we can estimate the evolutionary response of a female trait to selection on males as
 
 $$
 R_{MF} = \sigma(A_{wM}, A_{zFi})
-$${#eq-Mf-Fz}
+$$ {#eq-Mf-Fz}
 
-and the evolutionary response of a male trait to selection on males 
+and the evolutionary response of a male trait to selection on males
 
 $$
 R_{MM} = \sigma(A_{wM}, A_{zMi})
-$${#eq-Mf-Mz}
+$$ {#eq-Mf-Mz}
 
 and selection on females
 
 $$
 R_{FM} = \sigma(A_{wF}, A_{zMi})
-$${#eq-Ff-Mz}
+$$ {#eq-Ff-Mz}
 
 ### Build models to calculate $R_{FF}$ & $R_{MF}$
 
@@ -437,13 +437,13 @@ p1 + p2 +
 
 ```
 
-**Figure S1**. The estimated response to selection on **a** females and **b** males for all traits in our dataset. Innermost bands approximate the median, while outer bands show the 66 and 95% credible intervals. Traits measured in females or males are denoted with an F or M respectively.
+**Figure S1**. The estimated response to selection on **a** females and **b** males for all organismal traits. Innermost bands approximate the median, while outer bands show the 66 and 95% credible intervals. Traits measured in females or males are denoted with an F or M respectively.
 
 ## Calculate various metrics
 
 Join the data frames and estimate the overall expected response to selection as $R = \frac{R_{F} + R_{M}}{2}$.
 
-In the same code chunk, for each trait, we also calculate the difference in the response to selection acting on females and males as $\Delta R = R_{FF} - R_{MF}$ for traits measured in females or $\Delta R = R_{FM} - R_{MM}$ for traits measured in males. This difference facilitates identification of traits where the response to selection is very different between sexes (in magnitude, and possibly also in sign). Note that $\Delta R$ alone does not reveal whether a trait is sexually antagonistic, because sexually concordant selection that varies in strength between sexes (or sex-limited selection) can result in a high value of $\Delta R$. 
+In the same code chunk, for each trait, we also calculate the difference in the response to selection acting on females and males as $\Delta R = R_{FF} - R_{MF}$ for traits measured in females or $\Delta R = R_{FM} - R_{MM}$ for traits measured in males. This difference facilitates identification of traits where the response to selection is very different between sexes (in magnitude, and possibly also in sign). Note that $\Delta R$ alone does not reveal whether a trait is sexually antagonistic, because sexually concordant selection that varies in strength between sexes (or sex-limited selection) can result in a high value of $\Delta R$.
 
 ```{r}
 
@@ -472,7 +472,7 @@ R_long_form <-
 
 ## Calculating evidence ratios
 
-We use the `brms` `hypothesis()` function to compute evidence ratios, where our hypothesis is $R$ (and its various related metrics) != 0. When the hypothesis is one-sided, this is the posterior probability under the hypothesis against its alternative. That is, when the hypothesis is of the form R > 0, the evidence ratio is the ratio of the posterior probability of R > 0 and the posterior probability of R < 0. In this example, values greater than one indicate that the evidence in favour of R > 0 is larger than evidence in favour of R < 0. In contrast, values smaller than one indicate that there is greater evidence in favour of R < 0 than R > 0. More on the `hypothesis` function can be found [here](https://paul-buerkner.github.io/brms/reference/hypothesis.brmsfit.html). We consider evidence ratios > 39 or < 1/39 as biologically notable (without accounting for multiple testing), as our hypothesis is two-directional (negative and positive values of $R$ are of interest to us) and these values closely correspond to the familiar frequentist p-value = 0.05 [(Makowski et al, 2019)](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02767/full).
+We use the `brms` `hypothesis()` function to compute evidence ratios, where our hypothesis is $R$ (and its various related metrics) != 0. When the hypothesis is one-sided, this is the posterior probability under the hypothesis against its alternative. That is, when the hypothesis is of the form R \> 0, the evidence ratio is the ratio of the posterior probability of R \> 0 and the posterior probability of R \< 0. In this example, values greater than one indicate that the evidence in favour of R \> 0 is larger than evidence in favour of R \< 0. In contrast, values smaller than one indicate that there is greater evidence in favour of R \< 0 than R \> 0. More on the `hypothesis` function can be found [here](https://paul-buerkner.github.io/brms/reference/hypothesis.brmsfit.html). We consider evidence ratios \> 39 or \< 1/39 as biologically notable (without accounting for multiple testing), as our hypothesis is two-directional (negative and positive values of $R$ are of interest to us) and these values closely correspond to the familiar frequentist p-value = 0.05 [(Makowski et al, 2019)](https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2019.02767/full).
 
 ```{r}
 
@@ -526,17 +526,17 @@ R_evidence_ratios_diff <-
 
 Next, we manually calculate evidence ratios for **sexually concordant responses to selection** by:
 
-1. Using the `p_direction` function from the `bayestestR` package, we find the proportion of the posterior distribution (the posterior probability) that is of the median's sign for each trait in each sex.
+1.  Using the `p_direction` function from the `bayestestR` package, we find the proportion of the posterior distribution (the posterior probability) that is of the median's sign for each trait in each sex.
 
-2. Using the `p_direction` output, we calculate the probability that a trait has positive $R$, $P(pos)$ or negative $R$, $P(neg) = 1 - P(pos)$.
+2.  Using the `p_direction` output, we calculate the probability that a trait has positive $R$, $P(pos)$ or negative $R$, $P(neg) = 1 - P(pos)$.
 
-3. Find $P(concord) = P(pos)_f P(pos)_m + P(neg)_f P(neg)_m$
+3.  Find $P(concord) = P(pos)_f P(pos)_m + P(neg)_f P(neg)_m$
 
-4. Find $P(antag) = P(pos)_f P(neg)_m + P(neg)_f P(pos)_m$
+4.  Find $P(antag) = P(pos)_f P(neg)_m + P(neg)_f P(pos)_m$
 
-5. Take the ratio of $P(concord)$ and $P(antag)$
+5.  Take the ratio of $P(concord)$ and $P(antag)$
 
-Evidence ratios > 1 indicate that the response to selection is more likely to be sexually concordant, whereas ratios < 1 indicate a sexually antagonistic response has higher probability. As indicated by step 3, a concordant response is possible when the trait responds to selection in either a negative or positive direction in both sexes. Similarly, step 4 shows that an antagonistic response is also possible via two paths. Hence, we once again consider evidence ratios > 39 or < 1/39 as biologically notable (without accounting for multiple testing).
+Evidence ratios \> 1 indicate that the response to selection is more likely to be sexually concordant, whereas ratios \< 1 indicate a sexually antagonistic response has higher probability. As indicated by step 3, a concordant response is possible when the trait responds to selection in either a negative or positive direction in both sexes. Similarly, step 4 shows that an antagonistic response is also possible via two paths. Hence, we once again consider evidence ratios \> 39 or \< 1/39 as biologically notable (without accounting for multiple testing).
 
 ```{r}
 pd_function <-function(Trait_name){
@@ -576,7 +576,7 @@ evidence_ratios_concord <-
     mutate(Concord_Evid_Ratio = p_sex_concord / p_sex_antag)
 }
 
-``` 
+```
 
 Join the evidence ratios into a single tibble and save as a `.csv` file for fast loading. Create new columns that indicate whether the evidence ratio indicate biologically notability.
 
@@ -737,7 +737,7 @@ plot_c <-
 
 ```
 
-**Figure S2**. Points show evidence ratios (ERs) for **a** the evolutionary change in response to selection on females ($R_{F}$), **b** the evolutionary change in response to selection on males ($R_{M}$) and **c** the total evolutionary response to selection ($\frac{1}{2}(R_F + R_M)$). Traits are loosely organised into guilds to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $R$ > 0 is equal to the probability that $R$ < 0. ER > 1 indicates a positive response is more likely, whereas ER < 1 indicates a negative response is more likely. The upper dotted line on each plot indicates an evidence ratio of 39, while the lower dotted line indicates an evidence ratio of 1/39; these correspond strongly with the frequentist $p$ = 0.05. Traits with the most extreme evidence ratios are labelled.
+**Figure S2**. Points show evidence ratios (ERs) for organismal-level traits. for **a** shows ERs for the evolutionary change in response to selection on females ($R_{F}$), **b** the evolutionary change in response to selection on males ($R_{M}$) and **c** the total evolutionary response to selection ($\frac{1}{2}(R_F + R_M)$). Traits are loosely organised into categories to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $R$ \> 0 is equal to the probability that $R$ \< 0. ER \> 1 indicates a positive response is more likely, whereas ER \> 1 indicates a positive response is more likely, whereas ER \< 1 indicates a negative response is more likely. The dotted lines indicate an evidence ratio of 39 or 1/39; these correspond strongly with the frequentist $p$ = 0.05. Traits with the most extreme evidence ratios are labelled.
 
 ```{r, fig.height=12, fig.width=12}
 plot_d <- 
@@ -816,11 +816,12 @@ plot_e <-
 (Figure_3 <- plot_d/ plot_e + plot_annotation(tag_levels = "a"))
 ```
 
-**Figure 3**. Points show evidence ratios (ERs) for **a** $\Delta R$ (defined as $R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the organismal level phenotype dataset. Traits are loosely organised into guilds to aid visualisation. The dashed lines indicate an evidence ratio of 1, where the probability that $\Delta R$ > 0 is equal to the probability that $\Delta R$ < 0, or that a trait is just as likely to have a sexually concordant response to selection (ER > 1) as a sexually antagonistic response (ER < 1). The dotted lines indicate an evidence ratio of 39 or 1/39; these correspond strongly with the frequentist $p$ = 0.05.  Traits with ER > 39 or < 1/39 are labelled.
+**Figure 3**. Points show evidence ratios (ERs) for **a** $\Delta R$ (defined as $R_F$ - $R_M$) and **b** sexual concordance, for all measured traits in the organismal level phenotype dataset. Traits are loosely organised into categories to aid visualisation. The dashed lines indicate an evidence ratio of 1,  meaning that the probability that $\Delta R$ \> 0 is equal to the probability that $\Delta R$ \< 0, or that a trait is just as likely to have a sexually concordant response to selection (ER \> 1) as a sexually antagonistic response (ER \< 1). The dotted lines indicate an evidence ratio of 39 or 1/39; these correspond strongly with the frequentist $p$ = 0.05. Traits with ER \> 39 or \< 1/39 are labelled.
 
 ## Supplementary dataset 2
 
 **Supplementary dataset 2**: $R$ partitions and associated evidence ratios for the organismal level trait dataset. Trait descriptions are provided in Supplementary dataset 1. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
+
 ```{r}
 all_ol_traits_summary <-
   R_all_traits %>% 
@@ -941,7 +942,7 @@ R_pA
 
 ### The model
 
-Fit the model to test whether $|R|$ is affected by the sex fitness and trait values were measured in. To account for sampling variance in the in our estimates, we weight each $R$ estimate by the inverse of its standard error. 
+Fit the model to test whether $|R|$ is affected by the sex fitness and trait values were measured in. To account for sampling variance in the in our estimates, we weight each $R$ estimate by the inverse of its standard error.
 
 ```{r}
 
@@ -1972,7 +1973,7 @@ if(!file.exists("data/transcriptome_output/R_diff_transcript_summarised.csv")){
 
 ## Calculating evidence ratios
 
-Use the `brms` `hypothesis()` function to compute evidence ratios, just as we did for the organismal level phenotypic traits. 
+Use the `brms` `hypothesis()` function to compute evidence ratios, just as we did for the organismal level phenotypic traits.
 
 ```{r}
 # build a function to calculate the evidence ratio, get the relevant info from the output and convert it to a tibble. Basically the same function, just with a different dataframe input and a memory clearing step that slows it down but allows it to run for many traits. 
@@ -2427,7 +2428,7 @@ evidence_ratios_transcriptome <-
 
 ```
 
-Find the number of evidence ratios > 39 or < 1/39 for each partition of $R$
+Find the number of evidence ratios \> 39 or \< 1/39 for each partition of $R$
 
 ```{r}
 response_pos <- evidence_ratios_transcriptome %>% filter(Overall_Evid_Ratio > 39) %>% arrange(-Overall_Evid_Ratio)
@@ -2450,15 +2451,15 @@ sexually_concordant <- evidence_ratios_transcriptome %>% filter(Concord_Evid_Rat
 sexually_antagonistic <- evidence_ratios_transcriptome %>% filter(Concord_Evid_Ratio < 1/39) %>% arrange(Concord_Evid_Ratio)
 ```
 
-- `r nrow(response_pos)` transcripts are predicted to have a positive overall response to selection, while `r nrow(response_neg)` transcripts ar expected to have a negative overall response. 
+-   `r nrow(response_pos)` transcripts are predicted to have a positive overall response to selection, while `r nrow(response_neg)` transcripts ar expected to have a negative overall response.
 
-- In response to selection on females, `r nrow(response_to_female_pos)` transcripts are expected to increase in expression, whereas `r nrow(response_to_female_neg)` are expected to decrease in mean expression.
+-   In response to selection on females, `r nrow(response_to_female_pos)` transcripts are expected to increase in expression, whereas `r nrow(response_to_female_neg)` are expected to decrease in mean expression.
 
-- In response to selection on males, `r nrow(response_to_male_pos)` transcripts are expected to increase in expression, whereas `r nrow(response_to_male_neg)` are expected to decrease in mean expression.
+-   In response to selection on males, `r nrow(response_to_male_pos)` transcripts are expected to increase in expression, whereas `r nrow(response_to_male_neg)` are expected to decrease in mean expression.
 
-- `r nrow(response_sexes_diff)` transcripts have notably different responses to selection on females compared with males.  
+-   `r nrow(response_sexes_diff)` transcripts have notably different responses to selection on females compared with males.
 
-- `r nrow(sexually_antagonistic)` transcripts are expected to have a sexually antagonistic response to selection, while `r nrow(sexually_concordant)` transcripts are expected to have a sexually concordant response. From these numbers, we can roughly estimate that 3.8% of transcripts that are responding to selection in both sexes are sexually antagonistic. 
+-   `r nrow(sexually_antagonistic)` transcripts are expected to have a sexually antagonistic response to selection, while `r nrow(sexually_concordant)` transcripts are expected to have a sexually concordant response. From these numbers, we can roughly estimate that 3.8% of transcripts that are responding to selection in both sexes are sexually antagonistic.
 
 Build the evidence ratio plots
 
@@ -2607,7 +2608,7 @@ plot_transcriptome_c <-
 
 ```
 
-**Figure S3**. Points show evidence ratios (ERs) for gene expression traits. **a** shows ERs for positive evolutionary change in traits in response to selection on females ($R_{F}$), **b** shows ERs for positive evolutionary change in traits in response to selection on males ($R_{M}$) and **c** ERs for the total evolutionary response to selection ($\frac{1}{2}(R_F + R_M)$). The dashed lines indicate an evidence ratio of 1, where the probability that $R$ > 0 is equal to the probability that $R$ < 0. ER > 1 indicates a positive response is more likely, whereas ER < 1 indicates a negative response is more likely. The upper dotted line on each plot indicates an evidence ratio of 39, while the lower dotted line indicates an evidence ratio of 1/39; these correspond strongly with the frequentist $p$ = 0.05. Genes represented by large points with black outlines indicate very extreme cases where evidence ratios could not be calculated, as the entire posterior distribution was found on one side of zero. Traits with the most extreme evidence ratios are labelled.
+**Figure S3**. Points show evidence ratios (ERs) for gene expression traits. **a** shows ERs for the evolutionary change in response to selection on females ($R_F$), **b** the evolutionary change in response to selection on males ($R_M$) and **c** the total evolutionary response to selection ($\frac{1}{2}(R_F + R_M)$). Dashed and dotted lines are as in Figure S2. Genes represented by large points with black outlines indicate extreme cases where evidence ratios could not be calculated, as the entire posterior distribution was found on one side of zero. Traits with the most extreme evidence ratios are labelled.
 
 ```{r, fig.height=7, fig.width=13}
 plot_transcriptome_d <- 
@@ -2683,11 +2684,12 @@ plot_transcriptome_e <-
 )
 ```
 
-**Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ in females - $R$ in males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER > 1000 or < 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER > 39 or < 1/39 are labelled.
+**Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ in females - $R$ in males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER \> 1000 or \< 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER \> 39 or \< 1/39 are labelled.
 
 ## Supplementary dataset 3
 
 **Supplementary dataset 3**: $R$ partitions and associated evidence ratios for the gene expression trait dataset. Data can be downloaded as a `.csv` file from the [github repository](https://github.com/tomkeaney/Secondary_theorem_separate_sexes) associated with this project.
+
 ```{r}
 
 all_transcriptome_summary <-
@@ -2936,7 +2938,7 @@ top / bottom &
   plot_annotation(tag_levels = "a") 
 ```
 
-**Figure 2**. **a** and **b** show mean $R_F$ and $R_M$ estimates for organismal and gene expression traits, respectively. Ellipses show where 95% of traits fall in multivariate normal trait space. **c** shows the posterior distribution for |$\overline{R_F}$| and |$\overline{R_M}$| across organismal-level traits, the mean expected response to selection (absolute value) in females and males and split by the sex the trait was measured in. **d** shows |$\overline{R_F}$| and |$\overline{R_M}$| across gene-expression traits. |$\overline{R}$| is expressed in trait standard deviations. **e** and **f** show the proportion of evolutionary change in response to selection predicted to occur through males, in the organismal and gene expression datasets, respectively. Points indicate the estimated mean with associated 66 and 95% credible intervals (where wide enough to be visible).
+**Figure 2**. **a** and **b** show $R_F$ and $R_M$ estimates for organismal and gene expression traits, respectively; ellipses show where 95% of traits fall in bivariate space. **c** shows the posterior distribution for \|$\overline{R_F}$\| and \|$\overline{R_M}$\| across organismal-level traits,  i.e. the mean of the absolute value of the expected response to selection (expressed in trait standard deviations) in females and males. Traits are split along the y axis by the sex in which the trait was measured. **d** shows \|$\overline{R_F}$\| and \|$\overline{R_M}$\| for gene-expression traits. **e** and **f** show the percentage increase or in decrease in the evolutionary response predicted to occur through males, compared to through females for the organismal-level and gene expression traits, respectively. Points indicate the estimated mean with associated 66 and 95% credible intervals (where wide enough to be visible).
 
 **Calculating stats for the results section**
 
@@ -2968,16 +2970,16 @@ median_R_total_model_transcriptome %>%
   summarise_draws("median", "sd", ~quantile(.x, probs = c(0.025, 0.975), na.rm = TRUE))
   
 ```
-      
+
 # Comparing genetic (co)variances between male and female traits
 
-The aim of this analysis is to test whether genetic covariances tend to be of similar magnitude between pairs of females traits, pairs of male traits, or pairs comprising one female trait and one male trait. 
+The aim of this analysis is to test whether genetic covariances tend to be of similar magnitude between pairs of females traits, pairs of male traits, or pairs comprising one female trait and one male trait.
 
-More specifically, using the terminology of the sex-specific multivariate breeder's equation (Lande 1980; explained in Appendix 1): 
+More specifically, using the terminology of the sex-specific multivariate breeder's equation (Lande 1980; explained in Appendix 1):
 
 $$\begin{bmatrix} \Delta\bar{z_f} \\ \Delta\bar{z_m} \end{bmatrix} = \frac{1}{2} \begin{bmatrix} G_f & B \\ B & G_m \end{bmatrix} \begin{bmatrix} \beta_f \\ \beta_m \end{bmatrix}$$
 
-this analysis tests whether the mean of the off-diagonal terms in $G_f$, $G_m$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another. 
+this analysis tests whether the mean of the off-diagonal terms in $G_f$, $G_m$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another.
 
 We use the organismal trait dataset as this is where we find large differences in the predicted response to selection on females and males.
 
@@ -3031,11 +3033,11 @@ get_independent_traits <- function(){
 
 The following code chunk first compiles a list of male and female traits for which a similar trait was measured in both sexes, by a single study, and then excludes all traits where this condition was not met. For example, [Schmidt et al (2017)](https://academic.oup.com/genetics/article/207/3/1181/5930670?login=true) measured "DDT resistance knockdown" in both sexes in separate assays, and so we kept DDT resistance knockdown (female) and DDT resistance knockdown (male) in the dataset.
 
-For each male or female trait, we then calculate the variance in line mean trait values, $\sigma_L^2$. $\sigma_L^2$ approximates the genetic variance (i.e. the variance in breeding values), since line means are estimates of the breeding value of that line's genotype. 
+For each male or female trait, we then calculate the variance in line mean trait values, $\sigma_L^2$. $\sigma_L^2$ approximates the genetic variance (i.e. the variance in breeding values), since line means are estimates of the breeding value of that line's genotype.
 
-We additionally calculated the coefficient of genetic variation ($CV_G$), defined as $100\sigma_L^2/\mu$, where $\mu$ is the mean of the line means. This quantity was only calculated for traits where $\mu$ was positive. We also excluded traits where $\mu$ < 0.0001, since many of these traits appeared to have been mean-centered by the original authors (with rounding error explaining why $\mu$ was not exactly zero). 
+We additionally calculated the coefficient of genetic variation ($CV_G$), defined as $100\sigma_L^2/\mu$, where $\mu$ is the mean of the line means. This quantity was only calculated for traits where $\mu$ was positive. We also excluded traits where $\mu$ \< 0.0001, since many of these traits appeared to have been mean-centered by the original authors (with rounding error explaining why $\mu$ was not exactly zero).
 
-Finally, for both the dataset of $\sigma_L^2$ estimates and the dataset of $CV_G$ estimates, we produced a reduced dataset that retained only a single randomly-selected pair of matching male and female traits per study. Analysis of these reduced datasets was intended to prevent individual studies that measured many traits from unduly influencing the results. 
+Finally, for both the dataset of $\sigma_L^2$ estimates and the dataset of $CV_G$ estimates, we produced a reduced dataset that retained only a single randomly-selected pair of matching male and female traits per study. Analysis of these reduced datasets was intended to prevent individual studies that measured many traits from unduly influencing the results.
 
 ```{r}
 
@@ -3093,9 +3095,10 @@ one_study_paired_test_data_CV_G <- paired_test_data_CV_G %>%
 
 ### Running Wilcoxon signed rank tests {.tabset}
 
-The following runs four paired Wilcoxon signed rank tests examining the null hypothesis that there is no difference in $\sigma_L^2$ or $CV_G$ between male and female traits, using either the full or reduced datasets. In all cases, the null hypothesis is not rejected at $\alpha=0.05$, suggesting that male and female traits do not consistently differ in genetic variance. 
+The following runs four paired Wilcoxon signed rank tests examining the null hypothesis that there is no difference in $\sigma_L^2$ or $CV_G$ between male and female traits, using either the full or reduced datasets. In all cases, the null hypothesis is not rejected at $\alpha=0.05$, suggesting that male and female traits do not consistently differ in genetic variance.
 
 #### Variance (full data)
+
 ```{r}
 wilcox.test(paired_test_data_var$Female, 
             paired_test_data_var$Male, paired=TRUE)
@@ -3103,6 +3106,7 @@ cat("Number of male-female trait pairs analysed:", nrow(paired_test_data_var))
 ```
 
 #### Variance (reduced data)
+
 ```{r}
 wilcox.test(one_study_paired_test_data_var$Female, 
             one_study_paired_test_data_var$Male, paired=TRUE)
@@ -3110,6 +3114,7 @@ cat("Number of male-female trait pairs analysed:", nrow(one_study_paired_test_da
 ```
 
 #### $CV_G$ (full data)
+
 ```{r}
 wilcox.test(paired_test_data_CV_G$Female, 
             paired_test_data_CV_G$Male, paired=TRUE)
@@ -3117,6 +3122,7 @@ cat("Number of male-female trait pairs analysed:", nrow(paired_test_data_CV_G))
 ```
 
 #### $CV_G$ (reduced data)
+
 ```{r}
 wilcox.test(one_study_paired_test_data_CV_G$Female, 
             one_study_paired_test_data_CV_G$Male, paired=TRUE)
@@ -3130,7 +3136,7 @@ cat("Number of male-female trait pairs analysed:", nrow(one_study_paired_test_da
 This analysis does not use all the traits in our dataset, because trait pairs measured in the same study (and often the same individuals) may be especially similar due to confounding environmental sources of phenotypic covariance, which would inflate estimates of the genetic covariance. To deal with this issue simply and robustly, we randomly retained a single trait (which could be either male or female) per study, and discarded all other traits. Only traits measured in at least 80 lines are used in this analysis, and the line means were scaled to mean=0, variance=1 prior to analysis.
 
 We then calculate the covariance in line means (using all pairwise complete observations), which is an estimate of the genetic covariance (given that line means are estimates of the breeding values). Each calculated covariance is then classified as either a female-female, male-male, or between-sex covariance for subsequent statistical testing and plotting.
- 
+
 ```{r}
 # Get a single random male or female trait per study 
 # (only including traits measured in at least 80 lines)
@@ -3185,10 +3191,10 @@ anova(lm(cov ~ sex_combo, data = data_for_test))
 ```
 
 #### Kruskal-Wallis results
+
 ```{r}
 kruskal.test(cov ~ sex_combo, data = data_for_test)
 ```
-
 
 ### Plot the estimated G matrix
 
@@ -3233,7 +3239,7 @@ ggplot(plot_data_covs, aes(trait1, trait2, fill = cov)) +
         axis.text.y = element_text(size = 8))
 ```
 
-**Figure S4**. The estimated G matrix. $G_f$ is shown in the top left quadrant, $G_m$ in the bottom right, and $B$ in the top right and bottom left. There is no clear pattern: genetic correlations are of similar magnitude within $G_f$, $G_m$, and $B$. The rows are sorted within sexes using hierarchical clustering, though rather few blocks of genetically co-varying traits are evident.
+**Figure S4**. The estimated G matrix. $G_f$ is shown in the top left quadrant, $G_m$ in the bottom right, and $B$ in the top right and bottom left. There is no clear pattern: genetic correlations are of similar magnitude within $G_f$, $G_m$, and $B$. The traits are sorted within sexes using hierarchical clustering, though rather few blocks of genetically co-varying traits are evident.
 
 ### Plot distribution of genetic covariances
 
@@ -3255,30 +3261,29 @@ plot_data_covs %>%
   theme(legend.position = "none")
 ```
 
-**Figure S5**. the distribution of genetic covariances between traits **a** expressed in females, **b** expressed in different sexes and **c** expressed in males.
+**Figure S5**. the distribution of genetic covariances between traits **a** expressed in females (i.e. the unique elements of **$G_f$**), **b** expressed in different sexes (unique elements of **$B$**)  and **c** expressed in males (unique elements of **$G_m$**).
 
 # References
 
-Bürkner, P.-C. 2017. brms: An R Package for Bayesian Multilevel Models Using Stan. _Journal of statistical software_ 80:1.
+Bürkner, P.-C. 2017. brms: An R Package for Bayesian Multilevel Models Using Stan. *Journal of statistical software* 80:1.
 
-Everett, L. J., W. Huang, S. Zhou, M. A. Carbone, R. F. Lyman, G. H. Arya, M. S. Geisz, et al. 2020. Gene expression networks in the _Drosophila_ Genetic Reference Panel. _Genome research_ 30:485–496.
+Everett, L. J., W. Huang, S. Zhou, M. A. Carbone, R. F. Lyman, G. H. Arya, M. S. Geisz, et al. 2020. Gene expression networks in the *Drosophila* Genetic Reference Panel. *Genome research* 30:485–496.
 
-Geeta Arun, M., T. S. Chechi, S. D. Bhosle, Srishti, R. Meena, N. Ahlawat, K. Maggu, R. Kapila and N. G. Prasad. _In preparation_. Using sex and sex ratio specific Price-Robertson covariances to investigate within-sex and across-sex selective effects on reproduction related traits in _Drosophila melanogaster_.
+Geeta Arun, M., T. S. Chechi, S. D. Bhosle, Srishti, R. Meena, N. Ahlawat, K. Maggu, R. Kapila and N. G. Prasad. *In preparation*. Using sex and sex ratio specific Price-Robertson covariances to investigate within-sex and across-sex selective effects on reproduction related traits in *Drosophila melanogaster*.
 
-Huang, W., M. A. Carbone, M. M. Magwire, J. A. Peiffer, R. F. Lyman, E. A. Stone, R. R. H. Anholt, et al. 2015. Genetic basis of transcriptome diversity in _Drosophila melanogaster_. _Proceedings of the National Academy of Sciences_ 112:E6010–9.
+Huang, W., M. A. Carbone, M. M. Magwire, J. A. Peiffer, R. F. Lyman, E. A. Stone, R. R. H. Anholt, et al. 2015. Genetic basis of transcriptome diversity in *Drosophila melanogaster*. *Proceedings of the National Academy of Sciences* 112:E6010–9.
 
-Jin, K., K. A. Wilson, J. N. Beck, C. S. Nelson, G. W. Brownridge 3rd, B. R. Harrison, D. Djukovic, et al. 2020. Genetic and metabolomic architecture of variation in diet restriction-mediated lifespan extension in _Drosophila_. _PLoS genetics_ 16:e1008835.
+Jin, K., K. A. Wilson, J. N. Beck, C. S. Nelson, G. W. Brownridge 3rd, B. R. Harrison, D. Djukovic, et al. 2020. Genetic and metabolomic architecture of variation in diet restriction-mediated lifespan extension in *Drosophila*. *PLoS genetics* 16:e1008835.
 
-Lande, R. 1980. Sexual Dimorphism, Sexual Selection, and Adaptation in Polygenic Characters. _Evolution_ 34:292–305.
+Lande, R. 1980. Sexual Dimorphism, Sexual Selection, and Adaptation in Polygenic Characters. *Evolution* 34:292–305.
 
-Makowski, D., M. Ben-Shachar, and D. Lüdecke. 2019. BayestestR: Describing effects and their uncertainty, existence and significance within the Bayesian framework. _Journal of open source software_ 4:1541.
+Makowski, D., M. Ben-Shachar, and D. Lüdecke. 2019. BayestestR: Describing effects and their uncertainty, existence and significance within the Bayesian framework. *Journal of open source software* 4:1541.
 
-Robertson, A. 1968. The spectrum of genetic variation. _Population biology and evolution_.
+Robertson, A. 1968. The spectrum of genetic variation. *Population biology and evolution*.
 
-Schmidt, J. M., P. Battlay, R. S. Gledhill-Smith, R. T. Good, C. Lumb, A. Fournier-Level, and C. Robin. 2017. Insights into DDT Resistance from the _Drosophila melanogaster_ Genetic Reference Panel. _Genetics_ 207:1181–1193.
+Schmidt, J. M., P. Battlay, R. S. Gledhill-Smith, R. T. Good, C. Lumb, A. Fournier-Level, and C. Robin. 2017. Insights into DDT Resistance from the *Drosophila melanogaster* Genetic Reference Panel. *Genetics* 207:1181–1193.
 
-Wong, H. W. S., and L. Holman. 2023. Pleiotropic fitness effects across sexes and ages in the _Drosophila_ genome and transcriptome. _Evolution_.
-
+Wong, H. W. S., and L. Holman. 2023. Pleiotropic fitness effects across sexes and ages in the *Drosophila* genome and transcriptome. *Evolution*.
 
 ### Analysis system environment:
 
