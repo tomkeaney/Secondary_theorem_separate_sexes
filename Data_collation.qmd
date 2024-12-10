@@ -8,8 +8,9 @@ execute:
 # Load necessary packages
 
 ```{r load packages}
-library(tidyverse)
-library(DT) # for interactive tables
+library(groundhog)
+groundhog.library(tidyverse, "2024-10-12")
+groundhog.library(DT, "2024-10-12") # for interactive tables
 ```
 
 ## Loading and combining the DGRP phenotype data 

@@ -18,7 +18,22 @@ We welcome any queries or comments concerning our analysis; please email `tkeane
 ### Analysis system environment:
 
 ```{r, echo=FALSE}
-library(pander)
-pander(sessionInfo())
+library(tidyverse) # for tidy coding
+library(MetBrewer) # for many nice colour palettes
+library(rcartocolor) # more cool colours
+library(kableExtra) # for scrolling tables
+library(DT) # for interactive tables
+library(patchwork) # to join multiple plots nicely
+library(brms) # for bayesian models
+library(tidybayes) # for more bayesian things
+library(bayestestR) # for the pd metric 
+library(broom) # convert results of functions into tables
+library(ggtext) # for markdown features in ggplot
+library(ggrepel) # for plot labels in ggplot
+library(ggnewscale) # to reset scales in ggplot 
+library(pander) # nice tables
+library(groundhog) # to load package versions identical to ours
+
+sessionInfo() %>% report::report()
 ```
 
