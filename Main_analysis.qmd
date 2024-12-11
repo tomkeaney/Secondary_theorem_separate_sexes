@@ -2985,9 +2985,9 @@ The aim of this analysis is to test whether genetic covariances tend to be of si
 
 More specifically, using the terminology of the sex-specific multivariate breeder's equation (Lande 1980; explained in Appendix 1):
 
-$$\begin{bmatrix} \Delta\bar{z_f} \\ \Delta\bar{z_m} \end{bmatrix} = \frac{1}{2} \begin{bmatrix} G_f & B \\ B & G_m \end{bmatrix} \begin{bmatrix} \beta_f \\ \beta_m \end{bmatrix}$$
+$$\begin{bmatrix} \Delta\bar{z_\mathrm{F}} \\ \Delta\bar{z_\mathrm{M}} \end{bmatrix} = \frac{1}{2} \begin{bmatrix} G_\mathrm{F} & B \\ B & G_\mathrm{M} \end{bmatrix} \begin{bmatrix} \beta_\mathrm{F} \\ \beta_\mathrm{M} \end{bmatrix}$$
 
-this analysis tests whether the mean of the off-diagonal terms in $G_f$, $G_m$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another.
+this analysis tests whether the mean of the off-diagonal terms in $G_\mathrm{F}$, $G_\mathrm{M}$, and $B$ (i.e. female-female, male-male, and between-sex genetic covariances) tend to differ consistently from one another.
 
 We use the organismal trait dataset as this is where we find large differences in the predicted response to selection on females and males.
 
@@ -3041,11 +3041,11 @@ get_independent_traits <- function(){
 
 The following code chunk first compiles a list of male and female traits for which a similar trait was measured in both sexes, by a single study, and then excludes all traits where this condition was not met. For example, [Schmidt et al (2017)](https://academic.oup.com/genetics/article/207/3/1181/5930670?login=true) measured "DDT resistance knockdown" in both sexes in separate assays, and so we kept DDT resistance knockdown (female) and DDT resistance knockdown (male) in the dataset.
 
-For each male or female trait, we then calculate the variance in line mean trait values, $\sigma_L^2$. $\sigma_L^2$ approximates the genetic variance (i.e. the variance in breeding values), since line means are estimates of the breeding value of that line's genotype.
+For each male or female trait, we then calculate the variance in line mean trait values, $\sigma_\mathrm{L}^2$. $\sigma_\mathrm{L}^2$ approximates the genetic variance (i.e. the variance in breeding values), since line means are estimates of the breeding value of that line's genotype.
 
-We additionally calculated the coefficient of genetic variation ($CV_G$), defined as $100\sigma_L^2/\mu$, where $\mu$ is the mean of the line means. This quantity was only calculated for traits where $\mu$ was positive. We also excluded traits where $\mu$ \< 0.0001, since many of these traits appeared to have been mean-centered by the original authors (with rounding error explaining why $\mu$ was not exactly zero).
+We additionally calculated the coefficient of genetic variation ($CV_\mathrm{G}$), defined as $100\sigma_\mathrm{L}^2/\mu$, where $\mu$ is the mean of the line means. This quantity was only calculated for traits where $\mu$ was positive. We also excluded traits where $\mu$ \< 0.0001, since many of these traits appeared to have been mean-centered by the original authors (with rounding error explaining why $\mu$ was not exactly zero).
 
-Finally, for both the dataset of $\sigma_L^2$ estimates and the dataset of $CV_G$ estimates, we produced a reduced dataset that retained only a single randomly-selected pair of matching male and female traits per study. Analysis of these reduced datasets was intended to prevent individual studies that measured many traits from unduly influencing the results.
+Finally, for both the dataset of $\sigma_\mathrm{L}^2$ estimates and the dataset of $CV_\mathrm{G}$ estimates, we produced a reduced dataset that retained only a single randomly-selected pair of matching male and female traits per study. Analysis of these reduced datasets was intended to prevent individual studies that measured many traits from unduly influencing the results.
 
 ```{r}
 
@@ -3103,7 +3103,7 @@ one_study_paired_test_data_CV_G <- paired_test_data_CV_G %>%
 
 ### Running Wilcoxon signed rank tests {.tabset}
 
-The following runs four paired Wilcoxon signed rank tests examining the null hypothesis that there is no difference in $\sigma_L^2$ or $CV_G$ between male and female traits, using either the full or reduced datasets. In all cases, the null hypothesis is not rejected at $\alpha=0.05$, suggesting that male and female traits do not consistently differ in genetic variance.
+The following runs four paired Wilcoxon signed rank tests examining the null hypothesis that there is no difference in $\sigma_\mathrm{L}^2$ or $CV_\mathrm{G}$ between male and female traits, using either the full or reduced datasets. In all cases, the null hypothesis is not rejected at $\alpha=0.05$, suggesting that male and female traits do not consistently differ in genetic variance.
 
 #### Variance (full data)
 
@@ -3121,7 +3121,7 @@ wilcox.test(one_study_paired_test_data_var$Female,
 cat("Number of male-female trait pairs analysed:", nrow(one_study_paired_test_data_var))
 ```
 
-#### $CV_G$ (full data)
+#### $CV_\mathrm{G}$ (full data)
 
 ```{r}
 wilcox.test(paired_test_data_CV_G$Female, 
@@ -3129,7 +3129,7 @@ wilcox.test(paired_test_data_CV_G$Female,
 cat("Number of male-female trait pairs analysed:", nrow(paired_test_data_CV_G))
 ```
 
-#### $CV_G$ (reduced data)
+#### $CV_\mathrm{G}$ (reduced data)
 
 ```{r}
 wilcox.test(one_study_paired_test_data_CV_G$Female, 
@@ -3182,7 +3182,7 @@ for(i in 1:nrow(covs)) {
 
 ### Test for sex effects on genetic covariance {.tabset}
 
-The following statistical test examines the null hypothesis that there is no difference in mean genetic covariance between 3 kinds of trait pairs: pairs of female traits, pairs of male traits, and pairs in which one is a female trait and one a male trait (i.e elements of $G_f$, $G_m$ and $B$ respectively). Whether using ANOVA or a Kruskal-Wallis test (a non-parametric 1-way ANOVA), there is no significant difference in genetic covariance.
+The following statistical test examines the null hypothesis that there is no difference in mean genetic covariance between 3 kinds of trait pairs: pairs of female traits, pairs of male traits, and pairs in which one is a female trait and one a male trait (i.e elements of $G_\mathrm{F}$, $G_\mathrm{M}$ and $B$ respectively). Whether using ANOVA or a Kruskal-Wallis test (a non-parametric 1-way ANOVA), there is no significant difference in genetic covariance.
 
 #### ANOVA results
 
@@ -3247,7 +3247,7 @@ ggplot(plot_data_covs, aes(trait1, trait2, fill = cov)) +
         axis.text.y = element_text(size = 8))
 ```
 
-**Figure S4**. The estimated G matrix. $G_f$ is shown in the top left quadrant, $G_m$ in the bottom right, and $B$ in the top right and bottom left. There is no clear pattern: genetic correlations are of similar magnitude within $G_f$, $G_m$, and $B$. The traits are sorted within sexes using hierarchical clustering, though rather few blocks of genetically co-varying traits are evident.
+**Figure S4**. The estimated G matrix. $G_\mathrm{F}$ is shown in the top left quadrant, $G_\mathrm{M}$ in the bottom right, and $B$ in the top right and bottom left. There is no clear pattern: genetic correlations are of similar magnitude within $G_\mathrm{F}$, $G_\mathrm{M}$, and $B$. The traits are sorted within sexes using hierarchical clustering, though rather few blocks of genetically co-varying traits are evident.
 
 ### Plot distribution of genetic covariances
 
@@ -3269,7 +3269,7 @@ plot_data_covs %>%
   theme(legend.position = "none")
 ```
 
-**Figure S5**. the distribution of genetic covariances between traits **a** expressed in females (i.e. the unique elements of **$G_f$**), **b** expressed in different sexes (unique elements of **$B$**)  and **c** expressed in males (unique elements of **$G_m$**).
+**Figure S5**. the distribution of genetic covariances between traits **a** expressed in females (i.e. the unique elements of **$G_\mathrm{F}$**), **b** expressed in different sexes (unique elements of **$B$**)  and **c** expressed in males (unique elements of **$G_\mathrm{M}$**).
 
 # References
 
