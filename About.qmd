@@ -5,7 +5,7 @@ execute:
   message: false
 ---
 
-This website presents an analysis of the predicted evolutionary response to selection in a population of _Drosophila melanogaster_. It accompanies the manuscript "The complication of sex: estimating adaptation when selection acts on females and males" in review at _Evolution_.
+This website presents an analysis of the predicted evolutionary response to selection in a population of _Drosophila melanogaster_. It accompanies the manuscript "Quantifying the phenome-wide response to sex-specific selection in _Drosophila melanogaster_" in review at _Evolution_.
 
 The [data collation](Data_collation.html) tab contains information on our dataset and documents how it was quality controlled. Our analysis relies on using the mean phenotypic values for near-isogenic lines of flies. Each line carries a single genotype so these phenotypic means can be used as estimates of breeding values.
 
