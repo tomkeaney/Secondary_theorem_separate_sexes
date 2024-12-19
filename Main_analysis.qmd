@@ -856,7 +856,9 @@ all_ol_traits_summary <-
   mutate(across(c(3,4,5,7,8,9,11,12,13,15,16,17), ~round(.x, 3)),
          across(ends_with("ER"), ~ round(.x, 4)))
 
-write_csv(all_ol_traits_summary, "data/organismal_level_output/Supplementary_dataset_2.csv")
+if(!file.exists("Supplementary_datasets/Supplementary_dataset_2.csv")){
+  write_csv(all_transcriptome_summary, "Supplementary_datasets/Supplementary_dataset_2.csv")
+}
 
 my_data_table(all_ol_traits_summary)
   
@@ -2686,7 +2688,7 @@ plot_transcriptome_e <-
 )
 ```
 
-**Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ caused by seleciton on females - $R$ caused by selection on males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER \> 1000 or \< 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER \> 39 or \< 1/39 are labelled.
+**Figure 4**. Points show evidence ratios (ERs) for **a** $\Delta R$ ($R$ caused by selection on females - $R$ caused by selection on males) and **b** sexual concordance, for all measured traits in the transcriptome. Dashed and dotted lines are as in Figure 3. In **a**, traits with ER \> 1000 or \< 1/1000 are labelled with gene symbols, whereas in **b**, traits with ER \> 39 or \< 1/39 are labelled.
 
 ## Supplementary dataset 3
 
@@ -2735,7 +2737,9 @@ all_transcriptome_summary <-
   mutate(across(c(5,6,7,9,10,11,13,14,15,17,18,19), ~round(.x, 3)),
          across(ends_with("ER"), ~ round(.x, 4))) 
 
-write_csv(all_transcriptome_summary, "data/transcriptome_output/Supplementary_dataset_3.csv")
+if(!file.exists("Supplementary_datasets/Supplementary_dataset_3.csv")){
+  write_csv(all_transcriptome_summary, "Supplementary_datasets/Supplementary_dataset_3.csv")
+}
 
 my_data_table(all_transcriptome_summary)
   
