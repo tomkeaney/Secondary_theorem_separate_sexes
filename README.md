@@ -1,6 +1,6 @@
 # Secondary_theorem_separate_sexes
 
-This repository hosts all code associated with the manuscript _Quantifying the phenome-wide response to sex-specific selection in Drosophila melanogaster_ currently in review at _Evolution_. The recommended way to review our code is through [this](https://tomkeaney.github.io/Secondary_theorem_separate_sexes/) detailed report, built with quarto and hosted on github pages. It contains information on our coding environment, explains the entirety of the code used to run analysis and figures, and displays all three supplementary datasets. 
+This repository hosts all code associated with the manuscript _Quantifying the phenome-wide response to sex-specific selection in Drosophila melanogaster_ currently in review at _Evolution_. The recommended way to review our code is through [this](https://tomkeaney.github.io/Secondary_theorem_separate_sexes/About.html) detailed report, built with quarto and hosted on github pages. It contains information on our coding environment, houses and explains the entirety of the code used to run analysis and build figures, and displays all three supplementary datasets. 
 
 For those interested in running the code, we provide an explanation of the important files to run after you clone this repository:
 
