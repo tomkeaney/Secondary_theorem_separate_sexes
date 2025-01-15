@@ -20,9 +20,9 @@ The `Figures` folder contains all of the main text and supplementary figures in 
 
 The `code` folder contains the `get_gene_annotations.R` file, which contains code to download _D. melanogaster_ gene annotations from org.Dm.eg.db, sourced from Bioconductor.
 
-The `data` folder contains all the data needed to rerun the analysis. It has three major subdirectories.
+The `Supplementary_datasets` folder contains Supplementary datasets 1-3.
 
-`Supplementary_datasets` contains Supplementary datasets 1-3.
+The `data` folder contains all the data needed to rerun the analysis. It has three major subdirectories.
 
 **data collation**
 
