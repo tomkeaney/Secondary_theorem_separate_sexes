@@ -7,11 +7,11 @@ execute:
 
 This website presents an analysis of the predicted evolutionary response to selection in a population of _Drosophila melanogaster_. It accompanies the manuscript "Quantifying the phenome-wide response to sex-specific selection in _Drosophila melanogaster_" in review at _Evolution_.
 
-The [data collation](Data_collation.html) tab contains information on our dataset and documents how it was quality controlled. Our analysis relies on using the mean phenotypic values for near-isogenic lines of flies. Each line carries a single genotype so these phenotypic means can be used as estimates of breeding values.
+The [data collation](https://tomkeaney.github.io/Secondary_theorem_separate_sexes/Data_collation.html) tab contains information on our dataset and documents how it was quality controlled. Our analysis relies on using the mean phenotypic values for near-isogenic lines of flies. Each line carries a single genotype so these phenotypic means can be used as estimates of breeding values.
 
-The [Find line means](docs/Get_line_means_from_raw_data.html) tab documents the statistical modelling we used to find line means when only raw, individual level data was provided by the original study.
+The [Find line means](https://tomkeaney.github.io/Secondary_theorem_separate_sexes/Get_line_means_from_raw_data.html) tab documents the statistical modelling we used to find line means when only raw, individual level data was provided by the original study.
 
-The [Analysis](docs/Main_analysis.html) tab documents our statistical analysis. It includes the code to wrangle the data, run the models and build the figures. 
+The [Analysis](https://tomkeaney.github.io/Secondary_theorem_separate_sexes/Main_analysis.html) tab documents our statistical analysis. It includes the code to wrangle the data, run the models and build the figures. 
 
 We welcome any queries or comments concerning our analysis; please email `tkeaney@uni-mainz.de`
 
